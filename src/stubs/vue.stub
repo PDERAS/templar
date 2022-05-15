@@ -1,0 +1,11 @@
+<template>
+<div>
+    Welcome to the {{class}} page
+</div>
+</template>
+
+<script>
+export default {
+
+};
+</script>

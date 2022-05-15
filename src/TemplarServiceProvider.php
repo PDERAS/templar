@@ -2,7 +2,11 @@
 
 namespace Pderas\Templar;
 
+
 use Illuminate\Support\ServiceProvider;
+use Pderas\Templar\Commands\TemplarMake;
+// Templating commands
+use Pderas\Templar\Commands\VueMakeCommand;
 
 class TemplarServiceProvider extends ServiceProvider
 {
@@ -23,6 +27,11 @@ class TemplarServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                TemplarMake::class,
+                VueMakeCommand::class
+            ]);
+        }
     }
 }
