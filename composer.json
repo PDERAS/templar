@@ -1,0 +1,23 @@
+{
+    "name": "pderas/templar",
+    "description": "A templating engine for the PDERAS pattern",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Pderas\\Templar\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Strider White"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Pderas\\Templar\\TemplarServiceProvider"
+            ]
+        }
+    }
+}
