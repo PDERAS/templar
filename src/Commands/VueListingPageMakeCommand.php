@@ -9,22 +9,22 @@ use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Support\Str;
 
-#[AsCommand(name: 'make:vue')]
-class VueMakeCommand extends GeneratorCommand
+#[AsCommand(name: 'make:vue-listing')]
+class VueListingPageMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'make:vue';
+    protected $name = 'make:vue-listing';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new vue file';
+    protected $description = 'Create a new vue listing file';
 
     /**
      * The type of class being generated.
@@ -34,24 +34,14 @@ class VueMakeCommand extends GeneratorCommand
     protected $type = 'Vue';
 
     /**
-     * The Composer instance.
-     *
-     * @var \Illuminate\Support\Composer
-     */
-    protected $composer;
-
-    /**
      * Create a new command instance.
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  \Illuminate\Support\Composer  $composer
      * @return void
      */
-    public function __construct(Filesystem $files, Composer $composer)
+    public function __construct(Filesystem $files)
     {
         parent::__construct($files);
-
-        $this->composer = $composer;
     }
 
     /**
@@ -62,8 +52,6 @@ class VueMakeCommand extends GeneratorCommand
     public function handle()
     {
         parent::handle();
-
-        //$this->composer->dumpAutoloads();
     }
 
     /**
@@ -76,7 +64,7 @@ class VueMakeCommand extends GeneratorCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return base_path("resources/js/pages/$name/{$name}Page.vue");;
+        return base_path("resources/js/pages/$name/{$name}ListingPage.vue");
     }
 
     /**
@@ -86,7 +74,7 @@ class VueMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return base_path('vendor/pderas/templar/src/stubs/vue.stub');
+        return base_path('vendor/pderas/templar/src/stubs/vue-listing-page.stub');
     }
 
     /**
@@ -112,13 +100,16 @@ class VueMakeCommand extends GeneratorCommand
     {
         $stub = $this->files->get($this->getStub());
 
-        return $this->replaceClass($stub, $name);
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+
+        // Replace {{ class }} with $class
+        $replaced_upper = str_replace(['{{ class }}'], $class, $stub);
+
+        // Replace {{ class_lower }} with lowercase $class
+        $replaced_lower = str_replace(['{{ class_lower }}'], strtolower($class), $replaced_upper);
+
+        // Replace {{ class_lower_singluar }} with lowercase $class singular
+        return str_replace(['{{ class_lower_singular }}'], Str::singular(strtolower($class)), $replaced_lower);
     }
 
-    /* protected function getOptions()
-    {
-        return [
-            ['force', null, InputOption::VALUE_NONE, 'Create the class even if the vue file already exists']
-        ];
-    } */
 }

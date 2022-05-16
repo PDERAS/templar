@@ -1,0 +1,85 @@
+import * as {{ class }}Api from '@/api/{{ class_lower }}';
+
+const getDefaultState = () => ({
+    all: []
+});
+
+const getters = {
+    //
+};
+
+const mutations = {
+    /**
+     * Resets the state to its factory settings
+     *
+     * @param {Object} state
+     */
+    RESET(state) {
+        Object.assign(state, getDefaultState());
+    }
+};
+
+const actions = {
+    /**
+     * Resets the app to its default state
+     *
+     * @param {Object} context
+     *
+     * @param {Promise}
+     */
+    async reset({ commit }) {
+        commit('RESET');
+    },
+
+    /**
+     * Search {{ class_lower }}
+     *
+     * @param {Object} params
+     *
+     * @return {Promise}
+     */
+    search{{ class }}(_, params) {
+        return {{ class }}Api.Search{{ class }}(params);
+    },
+
+    /**
+     * Store new {{ class_lower_singular }}
+     *
+     * @param {Object} params
+     *
+     * @return {Promise}
+     */
+    storeUser(_, params) {
+        return {{ class }}Api.Store{{ class_upper_singular }}(params);
+    },
+
+    /**
+     * Update {{ class_lower_singular }}
+     *
+     * @param {Object} params
+     *
+     * @return {Promise}
+     */
+    update{{ class_upper_singular }}(_, params) {
+        return {{ class }}Api.Update{{ class_upper_singular }}(params);
+    },
+
+    /**
+     * Delete {{ class_lower_singular }}
+     *
+     * @param {Object} params
+     *
+     * @return {Promise}
+     */
+    destroyUser(_, params) {
+        return {{ class }}Api.Destroy{{ class_upper_singular }}(params);
+    }
+};
+
+export default {
+    namespaced: true,
+    state: getDefaultState(),
+    getters,
+    mutations,
+    actions
+};

@@ -1,0 +1,37 @@
+import { axios } from '@pderas/axios-helper';
+
+/**
+ * Fetches the {{ class_lower_singular }}
+ *
+ * @param {Object} params
+ *
+ * @return {Promise}
+ */
+export const Search{{ class }} = params => axios.get('/api/v1/{{ class_lower }}', { params });
+
+/**
+ * Store new {{ class_lower_singular }}
+ *
+ * @param {Object} params
+ *
+ * @return {Promise}
+ */
+export const Store{{ class_upper_singular }} = params => axios.post('/api/v1/{{ class_lower }}', params);
+
+/**
+ * Update {{ class_lower_singular }}
+ *
+ * @param {Object} params
+ *
+ * @return {Promise}
+ */
+export const Update{{ class_upper_singular }} = params => axios.patch('/api/v1/{{ class_lower }}/' + params.hash, params);
+
+/**
+ * Delete a {{ class_lower_singular }}
+ *
+ * @param {Object} params
+ *
+ * @return {Promise}
+ */
+export const Destroy{{ class_upper_singular }} = params => axios.delete('/api/v1/{{ class_lower }}/' + params.hash);

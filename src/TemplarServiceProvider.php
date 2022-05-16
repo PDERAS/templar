@@ -2,11 +2,12 @@
 
 namespace Pderas\Templar;
 
-
 use Illuminate\Support\ServiceProvider;
 use Pderas\Templar\Commands\TemplarMake;
 // Templating commands
-use Pderas\Templar\Commands\VueMakeCommand;
+use Pderas\Templar\Commands\VueListingPageMakeCommand;
+use Pderas\Templar\Commands\VuexStoreMakeCommand;
+use Pderas\Templar\Commands\ApiWrapperMakeCommand;
 
 class TemplarServiceProvider extends ServiceProvider
 {
@@ -30,7 +31,9 @@ class TemplarServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 TemplarMake::class,
-                VueMakeCommand::class
+                VueListingPageMakeCommand::class,
+                VuexStoreMakeCommand::class,
+                ApiWrapperMakeCommand::class
             ]);
         }
     }

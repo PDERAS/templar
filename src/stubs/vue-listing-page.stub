@@ -1,0 +1,165 @@
+<template>
+<MainContentLayout>
+    <template v-slot:breadcrumb>
+        <div class="text-primary-dark font-bold">{{ class }}</div>
+    </template>
+    <template v-slot:title>{{ class }}</template>
+    <template v-slot:actions>
+        <button
+            class="bg-primary button hover:bg-secondary"
+            @click="openModal('{{ class }}Modal')">
+            <FontAwesomeIcon
+                icon="plus"
+                class="mr-2" />
+            Add {{ class }}
+        </button>
+    </template>
+    <div>
+        <div class="grid md:grid-cols-3 gap-4">
+            <StyledSearch
+                v-model="searchTerm"
+                name="search"
+                label="Search"
+                @input="search{{ class }}" />
+        </div>
+        <TableContainer
+            v-if="{{ class_lower }}.length"
+            :data="{{ class_lower }}"
+            class="{{ class_lower }}-table">
+            <TableHeaders>
+                <TableHeader>ID</TableHeader>
+                <TableHeader class="text-center">Actions</TableHeader>
+            </TableHeaders>
+
+            <TableBody>
+                <template #row="{ row:{{ class_lower_singular }} }">
+                    <TableCell>
+                        {{ {{ class_lower_singular }}.id }}
+                    </TableCell>
+                    <TableCell class="text-right">
+                        <button
+                            v-tooltip="'Edit {{ class }}'"
+                            class="button bg-secondary-dark hover: text-white"
+                            @click="openModal('{{ class }}Modal', 'Edit', {{ class_lower }})">
+                            <FontAwesomeIcon icon="user-edit" />
+                        </button>
+                        <button
+                            v-tooltip="'Delete {{ class }}'"
+                            class="button bg-danger text-white"
+                            @click="delete{{ class }}({{ class_lower_singular }})">
+                            <FontAwesomeIcon icon="user-times" />
+                        </button>
+                    </TableCell>
+                </template>
+            </TableBody>
+
+            <TableFooter>
+                <TablePagination
+                    :data="all"
+                    @paginate="paginate">
+                    <template #first>First</template>
+                    <template #numbers="{ page }">{{ page }}</template>
+                    <template #last>Last</template>
+                </TablePagination>
+            </TableFooter>
+        </TableContainer>
+        <template v-else-if="loading">
+            <FontAwesomeIcon
+                icon="circle-notch"
+                class="text-xl"
+                spin /> &nbsp; Loading results...
+        </template>
+        <template v-else>
+            <span class="italic">There are currently no {{ class_lower }}.</span>
+        </template>
+    </div>
+</MainContentLayout>
+</template>
+
+<script>
+import { mapState, mapActions, mapGetters } from 'vuex';
+
+export default {
+    data: (_) => ({
+        searchTerm: '',
+        page: 1,
+    }),
+
+    computed: {
+        ...mapState('{{ class_lower }}', {
+            all: 'all',
+        }),
+
+        ...mapGetters('app/loaders', {
+            isLoading: 'isLoading',
+        }),
+
+        {{ class_lower }}() {
+            return this.all?.data || [];
+        },
+
+        loading() {
+            return this.isLoading('/api/v1/{{ class_lower }}', 'get');
+        },
+    },
+
+    methods: {
+        ...mapActions('{{ class_lower }}', {
+            search: 'search{{ class }}',
+        }),
+
+        delete{{ class }}({{ class_lower_singular }}) {
+            this.$modals
+                .show('{{ class }}DeleteModal', {
+                    props: {
+                        {{ class_lower_singular }}: {{ class_lower_singular }},
+                    },
+                })
+                .then((_) => {
+                    this.search({
+                        searchTerm: this.searchTerm
+                    });
+                });
+        },
+
+        openModal(modal, mode = 'Create', {{ class_lower_singular }} = null) {
+            if (mode == 'Edit') {
+                this.$modals
+                    .show(modal, {
+                        props: {
+                            {{ class_lower_singular }}: {
+                                ...{{ class_lower_singular }}
+                            },
+                            mode: 'Edit',
+                        },
+                    })
+                    .then((_) => {
+                        this.search({
+                            searchTerm: this.searchTerm,
+                        });
+                    });
+            } else {
+                this.$modals.show(modal).then((_) => {
+                    this.search({
+                        searchTerm: this.searchTerm,
+                    });
+                });
+            }
+        },
+
+        search{{ class }}() {
+            this.search({
+                searchTerm: this.searchTerm,
+            });
+        },
+
+        paginate({ page }) {
+            this.page = page;
+            this.search({
+                searchTerm: this.searchTerm,
+                page: page,
+            });
+        },
+    },
+};
+</script>
