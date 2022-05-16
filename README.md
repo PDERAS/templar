@@ -2,10 +2,10 @@
 
 A command for generating several files related to the PDERAS pattern. This command will generate the following:
 
-- Vue listing page (with a table searching)
-- Vue modal for creating and editing
+- Vue listing page (with built-in paginated table + searching)
+- Vue modal for creating and editing (TODO)
 - Vuex Store file
-- JS API wrapper file (TODO)
+- JS API wrapper file
 - Model (TODO)
 - An API and Web Controller with stubbed functions (TODO)
 - Modify web.php and api.php (TODO)
