@@ -4,32 +4,34 @@ namespace Pderas\Templar\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Support\Str;
 
-#[AsCommand(name: 'make:vue-listing')]
-class VueListingPageMakeCommand extends GeneratorCommand
+#[AsCommand(name: 'make:vue-create-edit-modal')]
+class VueCreateEditModalMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'make:vue-listing';
+    protected $name = 'make:vue-create-edit-modal';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new vue listing file';
+    protected $description = 'Create a new vue Create Edit modal file';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Vue';
+    protected $type = 'VueEditCreateModal';
 
     /**
      * Create a new command instance.
@@ -62,7 +64,7 @@ class VueListingPageMakeCommand extends GeneratorCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return base_path("resources/js/pages/$name/{$name}Page.vue");
+        return base_path("resources/js/modals/modals/" . strtolower($name) . '/' . $name. "Modal.vue");
     }
 
     /**
@@ -72,7 +74,7 @@ class VueListingPageMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return base_path('vendor/pderas/templar/src/stubs/vue-listing-page.stub');
+        return base_path('vendor/pderas/templar/src/stubs/vue-create-edit-modal.stub');
     }
 
     /**
@@ -100,14 +102,17 @@ class VueListingPageMakeCommand extends GeneratorCommand
 
         $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        // Replace {{ class }} with $class
+        // Replace {{ class }} with uppercase first $class plural (i.e Members)
         $replaced_upper = str_replace(['{{ class }}'], $class, $stub);
 
-        // Replace {{ class_lower }} with lowercase $class
+        // Replace {{ class_lower }} with lowercase $class plural (i.e members)
         $replaced_lower = str_replace(['{{ class_lower }}'], strtolower($class), $replaced_upper);
 
-        // Replace {{ class_lower_singluar }} with lowercase $class singular
-        return str_replace(['{{ class_lower_singular }}'], Str::singular(strtolower($class)), $replaced_lower);
+        // Replace {{ class_lower_singluar }} with lowercase $class singular (i.e member)
+        $replaced_lower_singular = str_replace(['{{ class_lower_singular }}'], Str::singular(strtolower($class)), $replaced_lower);
+
+        // Replace {{ class_upper_singular }} with uppercase first $class plural (i.e Member)
+        return str_replace(['{{ class_upper_singular }}'], Str::singular(Str::ucfirst($class)), $replaced_lower_singular);
     }
 
 }

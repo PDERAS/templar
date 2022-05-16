@@ -71,7 +71,7 @@ const actions = {
      *
      * @return {Promise}
      */
-    destroyUser(_, params) {
+    destroy{{ class_upper_singular }}(_, params) {
         return {{ class }}Api.Destroy{{ class_upper_singular }}(params);
     }
 };

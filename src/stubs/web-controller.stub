@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Inertia\Inertia;
+use Pderas\VuexHydrate\Facades\Vuex;
+
+class {{ class_upper_singular }}Controller extends Controller
+{
+    /**
+     * {{ class }} listing page
+     *
+     * @return \Inertia\Response
+     */
+    public function {{ class_lower }}Page()
+    {
+        Vuex::load('{{ class_lower_singular }}', 'all');
+
+        return Inertia::render('{{ class }}/{{ class }}Page', [
+            '$vuex' => Vuex::toJson()
+        ]);
+    }
+}

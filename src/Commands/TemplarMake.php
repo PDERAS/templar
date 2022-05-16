@@ -32,20 +32,26 @@ class TemplarMake extends Command
         $this->call("make:vue-listing", ['name' => $this->getNameInput()]);
 
         // Make vue file for Create/Edit "Modal"
-
-        // Make PHP file for "vuex modular loader"
-        $this->line("Generating Vuex Store file ...");
+        $this->line("Generating Vue file for Create/Edit Modal...");
         $this->call("make:vuex-store", ['name' => $this->getNameInput()]);
 
+        // Make PHP file for "vuex modular loader"
+
         // Make js file for "Vuex Store"
+        $this->line("Generating Vuex Store JS file...");
+        $this->call("make:vue-create-edit-modal", ['name' => $this->getNameInput()]);
 
         // Make js file for "API wrapper"
-        $this->line("Generating Api Wrapper file ...");
+        $this->line("Generating Api Wrapper JS file...");
         $this->call("make:api-wrapper", ['name' => $this->getNameInput()]);
 
         // Possibly generate for navConfig.js?
 
-        // Make php file for Controller (already exists, maybe we can reuse?)
+        // Make php file for Web Controller
+        $this->line("Generating Web Controller PHP file...");
+        $this->call("make:web-controller", ['name' => $this->getNameInput()]);
+
+        // Make php file for API Controller
 
         // Figure out a way to edit exisitng routes (api.php and web.php) file and create
 
