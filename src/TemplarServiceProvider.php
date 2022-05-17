@@ -3,6 +3,7 @@
 namespace Pderas\Templar;
 
 use Illuminate\Support\ServiceProvider;
+use Pderas\Templar\Commands\ApiControllerMakeCommand;
 use Pderas\Templar\Commands\TemplarMake;
 // Templating commands
 use Pderas\Templar\Commands\VueListingPageMakeCommand;
@@ -37,7 +38,8 @@ class TemplarServiceProvider extends ServiceProvider
                 VuexStoreMakeCommand::class,
                 ApiWrapperMakeCommand::class,
                 VueCreateEditModalMakeCommand::class,
-                WebControllerMakeCommand::class
+                WebControllerMakeCommand::class,
+                ApiControllerMakeCommand::class
             ]);
         }
     }

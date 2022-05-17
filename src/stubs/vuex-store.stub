@@ -34,45 +34,45 @@ const actions = {
     /**
      * Search {{ class_lower }}
      *
-     * @param {Object} params
+     * @param {Object} payload
      *
      * @return {Promise}
      */
-    search{{ class }}(_, params) {
-        return {{ class }}Api.Search{{ class }}(params);
+    search{{ class }}(_, payload) {
+        return {{ class }}Api.Search{{ class }}(payload);
     },
 
     /**
      * Store new {{ class_lower_singular }}
      *
-     * @param {Object} params
+     * @param {Object} payload
      *
      * @return {Promise}
      */
-    storeUser(_, params) {
-        return {{ class }}Api.Store{{ class_upper_singular }}(params);
+    storeUser(_, payload) {
+        return {{ class }}Api.Store{{ class_upper_singular }}(payload);
     },
 
     /**
      * Update {{ class_lower_singular }}
      *
-     * @param {Object} params
+     * @param {Object} payload
      *
      * @return {Promise}
      */
-    update{{ class_upper_singular }}(_, params) {
-        return {{ class }}Api.Update{{ class_upper_singular }}(params);
+    update{{ class_upper_singular }}(_, payload) {
+        return {{ class }}Api.Update{{ class_upper_singular }}(payload);
     },
 
     /**
      * Delete {{ class_lower_singular }}
      *
-     * @param {Object} params
+     * @param {Object} payload
      *
      * @return {Promise}
      */
-    destroy{{ class_upper_singular }}(_, params) {
-        return {{ class }}Api.Destroy{{ class_upper_singular }}(params);
+    destroy{{ class_upper_singular }}(_, payload) {
+        return {{ class }}Api.Destroy{{ class_upper_singular }}(payload);
     }
 };
 

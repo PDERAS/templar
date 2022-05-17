@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+// Requests
+use App\Http\Requests\{{ class }}\Update{{ class_upper_singular }}Request;
+use App\Http\Requests\{{ class }}\Store{{ class_upper_singular }}Request;
+// Models
+use App\Models\{{ class_upper_singular }};
+// Misc
+use Pderas\VuexHydrate\Facades\Vuex;
+
+class {{ class_upper_singular }}Controller extends Controller
+{
+    /**
+     * {{ class_upper_singular }} search
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search()
+    {
+        Vuex::load('{{ class_lower_singular }}', 'all');
+
+        return response()->vuex();
+    }
+
+    /**
+     * Store a {{ class_lower_singular }}
+     *
+     * @param \App\Http\Requests\{{ class }}\Store{{ class_upper_singular }}Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(Store{{ class_upper_singular }}Request $request)
+    {
+        ${{ class_lower_singular }} = new {{ class_upper_singular }};
+
+        // Your Code Here
+
+        ${{ class_lower_singular }}->save();
+
+        Vuex::load('{{ class_lower_singular }}', 'all');
+
+        return response()->vuex();
+    }
+
+    /**
+     * Update a {{ class_lower_singular }}
+     *
+     * @param \App\Models\{{ class_upper_singular }}
+     * @param App\Http\Requests\{{ class }}\Update{{ class_upper_singular }}Request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update({{ class_upper_singular }} ${{ class_lower_singular }}, Update{{ class_upper_singular }}Request $request)
+    {
+        // Your Code Here
+
+        ${{ class_lower_singular }}->save();
+
+        Vuex::load('{{ class_lower_singular }}', 'all');
+
+        return response()->vuex();
+    }
+
+    /**
+     * Delete a {{ class_lower_singular }}
+     *
+     * @param {{ class_upper_singular }} ${{ class_lower_singular }}
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy({{ class_upper_singular }} ${{ class_lower_singular }})
+    {
+        ${{ class_lower_singular }}->delete();
+
+        Vuex::load('{{ class_lower_singular }}', 'all');
+
+        return response()->vuex();
+    }
+}
