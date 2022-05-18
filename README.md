@@ -7,11 +7,12 @@ This command will generate the following:
 - Vue listing page (with built-in paginated table + searching)
 - Vue modal for creating and editing
 - Vuex Store file
-- Vuex Modular Loader file *(TODO)* ⚠
+- Vuex Modular Loader file
 - JS API wrapper file
 - An API Controller with stubbed functions
 - Web Controller for viewing the listing page
-- Modify web.php and api.php *(TODO)* ⚠
+- Modify web.php
+- Modify api.php *(TODO)* ⚠
 
 All of these files will be 'plugged-in' out of the box, ready to use. All you have to do is create the relevant migration and fill out the Create/Update/Delete functions.
 
