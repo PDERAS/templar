@@ -4,9 +4,7 @@ namespace Pderas\Templar\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Support\Str;
 
 #[AsCommand(name: 'make:vuex-store')]
@@ -64,7 +62,7 @@ class VuexStoreMakeCommand extends GeneratorCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return base_path("resources/js/store/modules/" . strtolower($name) . ".js");
+        return base_path("resources/js/store/modules/" . Str::singular(strtolower($name)) . ".js");
     }
 
     /**

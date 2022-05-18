@@ -1,0 +1,36 @@
+<?php
+
+namespace App\VuexLoaders;
+
+use App\Models\{{ class_upper_singular }};
+use Pderas\VuexHydrate\Support\VuexLoader;
+
+class {{ class_upper_singular }}ModuleLoader extends VuexLoader
+{
+    /**
+     * Index of all {{ class_lower }}
+     *
+     * @return Object
+     */
+    public function all()
+    {
+        ${{ class_lower }} = {{ class_upper_singular }}::query();
+
+        if (request()->filled('searchTerm')) {
+            $search_term = request()->searchTerm;
+
+            /*
+
+            //  Your search query here...
+
+            ${{ class_lower }}->where(function ($query) use ($search_term) {
+                $query->where('column', 'like', "%{$search_term}%");
+            });
+
+            */
+        }
+
+        return ${{ class_lower }}
+            ->paginate();
+    }
+}

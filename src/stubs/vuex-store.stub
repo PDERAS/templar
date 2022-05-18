@@ -1,4 +1,4 @@
-import * as {{ class }}Api from '@/api/{{ class_lower }}';
+import * as {{ class_upper_singular }}Api from '@/api/{{ class_lower_singular }}';
 
 const getDefaultState = () => ({
     all: []
@@ -39,7 +39,7 @@ const actions = {
      * @return {Promise}
      */
     search{{ class }}(_, payload) {
-        return {{ class }}Api.Search{{ class }}(payload);
+        return {{ class_upper_singular }}Api.Search{{ class }}(payload);
     },
 
     /**
@@ -50,7 +50,7 @@ const actions = {
      * @return {Promise}
      */
     storeUser(_, payload) {
-        return {{ class }}Api.Store{{ class_upper_singular }}(payload);
+        return {{ class_upper_singular }}Api.Store{{ class_upper_singular }}(payload);
     },
 
     /**
@@ -61,7 +61,7 @@ const actions = {
      * @return {Promise}
      */
     update{{ class_upper_singular }}(_, payload) {
-        return {{ class }}Api.Update{{ class_upper_singular }}(payload);
+        return {{ class_upper_singular }}Api.Update{{ class_upper_singular }}(payload);
     },
 
     /**
@@ -72,7 +72,7 @@ const actions = {
      * @return {Promise}
      */
     destroy{{ class_upper_singular }}(_, payload) {
-        return {{ class }}Api.Destroy{{ class_upper_singular }}(payload);
+        return {{ class_upper_singular }}Api.Destroy{{ class_upper_singular }}(payload);
     }
 };
 

@@ -7,29 +7,29 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
-#[AsCommand(name: 'make:vue-create-edit-modal')]
-class VueCreateEditModalMakeCommand extends GeneratorCommand
+#[AsCommand(name: 'make:vuex-module-loader')]
+class VuexModuleLoaderMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'make:vue-create-edit-modal';
+    protected $name = 'make:vuex-module-loader';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new vue Create Edit modal file';
+    protected $description = 'Create a new vuex module loader file';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'VueEditCreateModal';
+    protected $type = 'VuexModuleLoader';
 
     /**
      * Create a new command instance.
@@ -62,7 +62,7 @@ class VueCreateEditModalMakeCommand extends GeneratorCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return base_path("resources/js/modals/modals/" . strtolower($name) . '/' . $name. "Modal.vue");
+        return base_path("app/VuexLoaders/" . Str::singular($name). "ModuleLoader.php");
     }
 
     /**
@@ -72,7 +72,7 @@ class VueCreateEditModalMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return base_path('vendor/pderas/templar/src/stubs/vue-create-edit-modal.stub');
+        return base_path('vendor/pderas/templar/src/stubs/vuex-module-loader.stub');
     }
 
     /**
