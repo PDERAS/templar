@@ -1,0 +1,88 @@
+<template>
+<ModalWrapper body-class="modal-small-content" header-class="bg-danger" @close-request="$emit('close-modal')">
+    <template v-slot:header>{{ header }}</template>
+    <template v-slot:footer>
+        <div class="flex flex-col md:flex-row md:justify-end items-center">
+            <button
+                :disabled="deleting"
+                class="button bg-gray-400 hover:bg-gray-500 mr-2"
+                type="button"
+                @click="closeModal">
+                Cancel
+            </button>
+            <button
+                :disabled="deleting"
+                class="button bg-danger"
+                type="button"
+                @click="submitForm">
+                <FontAwesomeIcon
+                    v-if="deleting"
+                    icon="circle-notch"
+                    class="text-sm"
+                    spin />
+                Delete {{ class }}
+            </button>
+        </div>
+    </template>
+
+    <div>Are you sure you want to delete this {{ class_lower_singular }}? This cannot be undone.</div>
+</ModalWrapper>
+</template>
+
+<script>
+import ModalWrapper from '@/components/ModalWrapper';
+import { mapActions, mapGetters } from 'vuex';
+
+export default {
+    components: {
+        ModalWrapper
+    },
+
+    props: {
+        {{ class_lower_singular }}: {
+            type: Object,
+            default() {
+                return {
+                    hash: null,
+                    // add default fields here
+                };
+            }
+        }
+    },
+
+    computed: {
+        ...mapGetters('app/loaders', [
+            'isLoading'
+        ]),
+
+        deleting() {
+            return this.isLoading('/api/v1/{{ class_lower }}/' + this.{{ class_lower_singular }}.hash, 'delete');
+        },
+
+        header() {
+            return 'Delete ';
+        }
+    },
+
+    methods: {
+        ...mapActions('{{ class_lower_singular }}', {
+            destroy: 'destroy{{ class_upper_singular }}'
+        }),
+
+        closeModal() {
+            this.$emit('close-modal');
+        },
+
+        async submitForm() {
+            this.resetErrors();
+            await this.destroy({
+                hash: this.{{ class_lower_singular }}.hash
+            }).then(_ => {
+                this.$toast.success({ title: 'success', message: '{{ class_upper_singular }} Deleted Successfully'});
+            });
+
+            this.$emit('close-modal');
+        }
+    }
+};
+</script>

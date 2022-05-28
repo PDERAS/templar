@@ -60,40 +60,66 @@ class TemplarMake extends Command
         // Extras
         $class_lower_plural = Str::lower($this->getNameInput());
         $class_singular = Str::singular($this->getNameInput());
+        $class_lower = Str::lower(Str::singular($class_singular));
+
+        // Keep track of what was generateed
+        $generated = [
+            'vue-listing' => false,
+            'vuex-store' => false,
+            'vue-create-edit-modal' => false,
+            'api-wrapper' => false,
+            'web-controller' => false,
+            'api-controller' => false,
+            'vuex-module-loader' => false,
+            'requests' => false,
+            'web-php' => false,
+            'api-php' => false
+        ];
 
         if ($ignore_prompt || $this->confirm("Generate vue 'listing' Page?")) {
             // Make vue file for "Page Listing"
             $this->call("make:vue-listing", ['name' => $this->getNameInput()]);
-        }
-
-        if ($ignore_prompt || $this->confirm("Generate vue created/edit modal?")) {
-            // Make vue file for Create/Edit "Modal"
-            $this->call("make:vuex-store", ['name' => $this->getNameInput()]);
+            $generated['vue-listing'] = true;
         }
 
         if ($ignore_prompt || $this->confirm("Generate Vuex store?")) {
             // Make js file for "Vuex Store"
+            $this->call("make:vuex-store", ['name' => $this->getNameInput()]);
+            $generated['vuex-store'] = true;
+        }
+
+        if ($ignore_prompt || $this->confirm("Generate vue created/edit modal?")) {
+            // Make vue file for Create/Edit "Modal"
             $this->call("make:vue-create-edit-modal", ['name' => $this->getNameInput()]);
+
+            // Make vue file for Delete "Modal"
+            $this->call("make:vue-delete-modal", ['name' => $this->getNameInput()]);
+
+            $generated['vue-create-edit-modal'] = true;
         }
 
         if ($ignore_prompt || $this->confirm("Generate Api Wrapper?")) {
             // Make js file for "API wrapper"
             $this->call("make:api-wrapper", ['name' => $this->getNameInput()]);
+            $generated['api-wrapper'] = true;
         }
 
         if ($ignore_prompt || $this->confirm("Generate Web Controller?")) {
             // Make php file for Web Controller
             $this->call("make:web-controller", ['name' => $this->getNameInput()]);
+            $generated['web-controller'] = true;
         }
 
         if ($ignore_prompt || $this->confirm("Generate Api Controller?")) {
             // Make php file for API Controller
             $this->call("make:api-controller", ['name' => $this->getNameInput()]);
+            $generated['api-controller'] = true;
         }
 
         if ($ignore_prompt || $this->confirm("Generate Vuex Module Loader?")) {
             // Make PHP file for "vuex modular loader"
             $this->call("make:vuex-module-loader", ['name' => $this->getNameInput()]);
+            $generated['vuex-module-loader'] = true;
         }
 
 
@@ -105,6 +131,8 @@ class TemplarMake extends Command
             $this->call("make:request", [
                 'name' => $this->getNameInput() . '/Update' . Str::singular($this->getNameInput()) . 'Request'
             ]);
+            $generated['requests'] = true;
+            $this->info("<bg=red>\nWARNING: Don't forget to set the request 'authorization' parameter to true\n</>");
         }
 
         if ($ignore_prompt || $this->confirm("Write endpoint route to web.php file?")) {
@@ -117,7 +145,7 @@ class TemplarMake extends Command
                 $web_string_controller_import
             );
 
-            // Write the route to web.php
+            // Write the GET route to web.php
             $web_string_get =
                 "\nRoute::get('/$class_lower_plural', [{$class_singular}Controller::class, '{$class_lower_plural}Page'])->name('{$this->getNameInput()}/{$this->getNameInput()}Page');";
 
@@ -125,14 +153,108 @@ class TemplarMake extends Command
                 base_path('routes/web.php'),
                 $web_string_get
             );
+
+            $generated['web-php'] = true;
+            $this->info("Wrote to web.php");
         }
 
-        /* if ($ignore_prompt || $this->confirm("Write endpoint route to api.php file?")) {
-            $this->line("Wrote to api.php");
-            // TODO
-        } */
+        if ($ignore_prompt || $this->confirm("Write CRUD endpoint route to api.php file?")) {
+            // Write the controller import to api.php
+            $api_string_controller_import =
+                "\nuse App\\Http\\Controllers\\Api\\{$class_singular}Controller;";
+
+            $this->files->append(
+                base_path('routes/api.php'),
+                $api_string_controller_import
+            );
+
+            // Write the route prefix
+            $api_route_prefix =
+                "\nRoute::middleware('auth:sanctum')->prefix('v1/$class_lower_plural')->middleware('role:super_admin')->group(function () {";
+
+            $this->files->append(
+                base_path('routes/api.php'),
+                $api_route_prefix
+            );
+
+            // Write the GET (search) route to api.php
+            $api_string_get =
+                "\n\tRoute::get('/', [{$class_singular}Controller::class, 'search']);";
+
+            $this->files->append(
+                base_path('routes/api.php'),
+                $api_string_get
+            );
+
+            // Write the POST (store) route to api.php
+            $api_string_get =
+                "\n\tRoute::post('/', [{$class_singular}Controller::class, 'store']);";
+
+            $this->files->append(
+                base_path('routes/api.php'),
+                $api_string_get
+            );
+
+            // Write the PATCH (update) route to api.php
+            $api_string_get =
+                "\n\tRoute::patch('/{{$class_lower}}', [{$class_singular}Controller::class, 'update']);";
+
+            $this->files->append(
+                base_path('routes/api.php'),
+                $api_string_get
+            );
+
+            // Write the DELETE (destroy) route to api.php
+            $api_string_get =
+                "\n\tRoute::delete('/{{$class_lower}}', [{$class_singular}Controller::class, 'destroy']);";
+
+            $this->files->append(
+                base_path('routes/api.php'),
+                $api_string_get
+            );
+
+            // Write the route postfix
+            $api_route_postfix =
+                "\n});";
+
+            $this->files->append(
+                base_path('routes/api.php'),
+                $api_route_postfix
+            );
+
+            $generated['api-php'] = true;
+
+            $this->info("Wrote to api.php");
+        }
+
+        /**
+         * Render out a nice table to see what was generated
+         */
+        $headers = ['Name', 'Was Generated'];
+        $table = [];
+
+        foreach ($generated as $name => $was_generated) {
+            $table[] = [
+                $name,
+                $was_generated ? '✅' : '❌'
+            ];
+        }
+
+        $this->table($headers, $table);
 
         return 0;
+    }
+
+    /**
+     * Helper function to append a string to a file
+     *
+     * @param String $import_statement
+     * @param String $path
+     *
+     * @return boolean successful write
+     */
+    protected function appendStringToFile(String $import_statement, String $path)
+    {
     }
 
     /**

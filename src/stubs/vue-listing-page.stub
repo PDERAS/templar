@@ -27,14 +27,14 @@
             :data="{{ class_lower }}"
             class="{{ class_lower }}-table">
             <TableHeaders>
-                <TableHeader>ID</TableHeader>
+                <TableHeader>Hash</TableHeader>
                 <TableHeader class="text-center">Actions</TableHeader>
             </TableHeaders>
 
             <TableBody>
                 <template #row="{ row:{{ class_lower_singular }} }">
                     <TableCell>
-                        {{ {{ class_lower_singular }}.id }}
+                        {{ {{ class_lower_singular }}.hash }}
                     </TableCell>
                     <TableCell class="text-right">
                         <button

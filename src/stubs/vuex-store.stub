@@ -49,7 +49,7 @@ const actions = {
      *
      * @return {Promise}
      */
-    storeUser(_, payload) {
+    store{{ class_upper_singular }}(_, payload) {
         return {{ class_upper_singular }}Api.Store{{ class_upper_singular }}(payload);
     },
 
