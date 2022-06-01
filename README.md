@@ -23,6 +23,10 @@ When you run the command, the package will prompt for each file generation. Opti
 
 ### Example
 
+First generate model and migration (optional)
+
+`php artisan make:model Member --migration`
+
 To generate boilerplate for a `Member`
 
 `php artisan templar:make Members`
