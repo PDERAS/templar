@@ -1,78 +1,67 @@
 <template>
 <MainContentLayout>
     <template v-slot:breadcrumb>
-        <div class="text-primary-dark font-bold">{{ class }}</div>
+        <div class="text-primary-dark font-bold">{{ class }}</div><div class="ml-2">> Listing</div>
     </template>
     <template v-slot:title>{{ class }}</template>
     <template v-slot:actions>
-        <button
-            class="bg-primary button hover:bg-secondary"
-            @click="openModal('{{ class }}Modal')">
-            <FontAwesomeIcon
-                icon="plus"
-                class="mr-2" />
-            Add {{ class }}
-        </button>
+        <StyledButton size="small" mode="secondary" @click="openModal('{{ class }}Modal')">
+            <FontAwesomeIcon icon="plus" class="mr-1" />
+            Add {{ class_upper_singular }}
+        </StyledButton>
     </template>
-    <div>
-        <div class="grid md:grid-cols-3 gap-4">
-            <StyledSearch
-                v-model="searchTerm"
-                name="search"
-                label="Search"
-                @input="search{{ class }}" />
-        </div>
-        <TableContainer
-            v-if="{{ class_lower }}.length"
-            :data="{{ class_lower }}"
-            class="{{ class_lower }}-table">
-            <TableHeaders>
-                <TableHeader>Hash</TableHeader>
-                <TableHeader class="text-center">Actions</TableHeader>
-            </TableHeaders>
-
-            <TableBody>
-                <template #row="{ row:{{ class_lower_singular }} }">
-                    <TableCell>
-                        {{ {{ class_lower_singular }}.hash }}
-                    </TableCell>
-                    <TableCell class="text-right">
-                        <button
-                            v-tooltip="'Edit {{ class }}'"
-                            class="button bg-secondary-dark hover: text-white"
-                            @click="openModal('{{ class }}Modal', 'Edit', {{ class_lower }})">
-                            <FontAwesomeIcon icon="user-edit" />
-                        </button>
-                        <button
-                            v-tooltip="'Delete {{ class }}'"
-                            class="button bg-danger text-white"
-                            @click="delete{{ class }}({{ class_lower_singular }})">
-                            <FontAwesomeIcon icon="user-times" />
-                        </button>
-                    </TableCell>
-                </template>
-            </TableBody>
-
-            <TableFooter>
-                <TablePagination
-                    :data="all"
-                    @paginate="paginate">
-                    <template #first>First</template>
-                    <template #numbers="{ page }">{{ page }}</template>
-                    <template #last>Last</template>
-                </TablePagination>
-            </TableFooter>
-        </TableContainer>
-        <template v-else-if="loading">
-            <FontAwesomeIcon
-                icon="circle-notch"
-                class="text-xl"
-                spin /> &nbsp; Loading results...
-        </template>
-        <template v-else>
-            <span class="italic">There are currently no {{ class_lower }}.</span>
-        </template>
+    <div class="grid md:grid-cols-3 gap-4 mb-4">
+        <StyledSearch
+            v-model="searchTerm"
+            name="search"
+            label="Search"
+            @input="search{{ class }}" />
     </div>
+
+    <div class="block lg:hidden">
+        <div v-for="{{ class_lower_singular }} in {{ class_lower }}" :key="{{ class_lower_singular }}.hash" class="mb-3 even:bg-gray-200 p-4 rounded border flex flex-col">
+            <div>
+                {{ {{ class_lower_singular }}.hash }}
+            </div>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <StyledButton :full="true" size="small" @click="openModal('{{ class }}Modal', 'Edit', {{ class_lower_singular }})">Edit <FontAwesomeIcon icon="pencil" /></StyledButton>
+                <StyledButton :full="true" size="small" @click="delete{{ class_upper_singular }}({{ class_lower_singular }})">Delete <FontAwesomeIcon icon="trash-alt" /></StyledButton>
+            </div>
+        </div>
+    </div>
+
+    <TableContainer v-if="{{ class_lower }}.length" :data="{{ class_lower }}" class="{{ class_lower }}-table">
+        <TableHeaders class="hidden-mobile-important">
+            <TableHeader>Hash</TableHeader>
+            <TableHeader>Actions</TableHeader>
+        </TableHeaders>
+
+        <TableBody class="hidden-mobile-important">
+            <template #row="{ row:{{ class_lower_singular }} }">
+                <TableCell>
+                    {{ {{ class_lower_singular }}.hash }}
+                </TableCell>
+                <TableActions>
+                    <Action icon="pencil" @click="openModal('{{ class }}Modal', 'Edit', {{ class_lower_singular }})">Edit</Action>
+                    <Action icon="trash-alt" @click="delete{{ class_upper_singular }}({{ class_lower_singular }})">Delete</Action>
+                </TableActions>
+            </template>
+        </TableBody>
+
+        <TableFooter>
+            <TablePagination :data="all" @paginate="paginate">
+                <template #first>First</template>
+                <template #numbers="{ page }">{{ page }}</template>
+                <template #last>Last</template>
+            </TablePagination>
+        </TableFooter>
+    </TableContainer>
+    <template v-else-if="loading">
+        <FontAwesomeIcon icon="circle-notch" class="text-xl" spin /> &nbsp; Loading results...
+    </template>
+    <template v-else>
+        <span class="italic">There are currently no {{ class_lower }}.</span>
+    </template>
 </MainContentLayout>
 </template>
 
@@ -80,18 +69,18 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
-    data: (_) => ({
+    data: _ => ({
         searchTerm: '',
-        page: 1,
+        page: 1
     }),
 
     computed: {
         ...mapState('{{ class_lower_singular }}', {
-            all: 'all',
+        	all: 'all'
         }),
 
         ...mapGetters('app/loaders', {
-            isLoading: 'isLoading',
+            isLoading: 'isLoading'
         }),
 
         {{ class_lower }}() {
@@ -100,66 +89,60 @@ export default {
 
         loading() {
             return this.isLoading('/api/v1/{{ class_lower }}', 'get');
-        },
+        }
     },
 
     methods: {
         ...mapActions('{{ class_lower_singular }}', {
             search: 'search{{ class }}',
+            destroy: 'destroy{{ class_upper_singular }}',
         }),
 
-        delete{{ class }}({{ class_lower_singular }}) {
-            this.$modals
-                .show('{{ class }}DeleteModal', {
-                    props: {
-                        {{ class_lower_singular }}: {{ class_lower_singular }},
-                    },
-                })
-                .then((_) => {
-                    this.search({
-                        searchTerm: this.searchTerm
-                    });
+        async delete{{ class_upper_singular }}({{ class_lower_singular }}) {
+            const confirm = await this.$modals.show('ConfirmationModal', {
+                props: {
+                    title: 'Confirm {{ class_upper_singular }} Removal',
+                    prompt: 'Are you sure you want to delete this {{ class_upper_singular }}? This cannot be undone.'
+                }
+            });
+
+            if (confirm) {
+                this.destroy({
+                    hash: {{ class_lower_singular }}.hash
+                }).then(_ => {
+                    this.$toast.success({ title: 'Success', message: '{{ class_upper_singular }} Deleted Successfully'});
+                    this.search({searchTerm: this.searchTerm});
                 });
+            }
         },
 
         openModal(modal, mode = 'Create', {{ class_lower_singular }} = null) {
             if (mode == 'Edit') {
-                this.$modals
-                    .show(modal, {
-                        props: {
-                            {{ class_lower_singular }}: {
-                                ...{{ class_lower_singular }}
-                            },
-                            mode: 'Edit',
+                this.$modals.show(modal, {
+                    props: {
+                        {{ class_lower_singular }}: {
+                            ...{{ class_lower_singular }}
                         },
-                    })
-                    .then((_) => {
-                        this.search({
-                            searchTerm: this.searchTerm,
-                        });
-                    });
+                        mode: 'Edit'
+                    }
+                }).then(_ => {
+                    this.search({searchTerm: this.searchTerm, page: this.page});
+                });
             } else {
-                this.$modals.show(modal).then((_) => {
-                    this.search({
-                        searchTerm: this.searchTerm,
-                    });
+                this.$modals.show(modal).then(_ => {
+                    this.search({searchTerm: this.searchTerm, page: this.page});
                 });
             }
         },
 
         search{{ class }}() {
-            this.search({
-                searchTerm: this.searchTerm,
-            });
+            this.search({searchTerm: this.searchTerm});
         },
 
         paginate({ page }) {
             this.page = page;
-            this.search({
-                searchTerm: this.searchTerm,
-                page: page,
-            });
-        },
-    },
+            this.search({searchTerm: this.searchTerm, page: page});
+        }
+    }
 };
 </script>
