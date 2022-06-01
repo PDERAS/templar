@@ -92,9 +92,6 @@ class TemplarMake extends Command
             // Make vue file for Create/Edit "Modal"
             $this->call("make:vue-create-edit-modal", ['name' => $this->getNameInput()]);
 
-            // Make vue file for Delete "Modal"
-            $this->call("make:vue-delete-modal", ['name' => $this->getNameInput()]);
-
             $generated['vue-create-edit-modal'] = true;
         }
 
