@@ -6,7 +6,6 @@ This command will generate the following:
 
 - Vue listing page (with built-in paginated table + searching)
 - Vue modal for creating and editing
-- Vue modal for deleting
 - Vuex Store file
 - Vuex Modular Loader file
 - JS API wrapper file
