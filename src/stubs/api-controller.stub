@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 // Requests
+use App\Http\Requests\{{ class }}\Search{{ class_upper_singular }}Request;
 use App\Http\Requests\{{ class }}\Update{{ class_upper_singular }}Request;
 use App\Http\Requests\{{ class }}\Store{{ class_upper_singular }}Request;
+use App\Http\Requests\{{ class }}\Delete{{ class_upper_singular }}Request;
 // Models
 use App\Models\{{ class_upper_singular }};
 // Misc
@@ -16,9 +18,11 @@ class {{ class_upper_singular }}Controller extends Controller
     /**
      * {{ class_upper_singular }} search
      *
+     * @param \App\Http\Requests\{{ class }}\Search{{ class_upper_singular }}Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function search()
+    public function search(Search{{ class_upper_singular }}Request $request)
     {
         Vuex::load('{{ class_lower_singular }}', 'all');
 
@@ -68,10 +72,11 @@ class {{ class_upper_singular }}Controller extends Controller
      * Delete a {{ class_lower_singular }}
      *
      * @param {{ class_upper_singular }} ${{ class_lower_singular }}
+     * @param \App\Http\Requests\{{ class }}\Delete{{ class_upper_singular }}Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy({{ class_upper_singular }} ${{ class_lower_singular }})
+    public function destroy({{ class_upper_singular }} ${{ class_lower_singular }}, Delete{{ class_upper_singular }}Request $request)
     {
         ${{ class_lower_singular }}->delete();
 
