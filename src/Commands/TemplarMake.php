@@ -120,13 +120,19 @@ class TemplarMake extends Command
         }
 
 
-        if ($ignore_prompt || $this->confirm("Generate Store/Update Requests?")) {
+        if ($ignore_prompt || $this->confirm("Generate Search/Store/Update/Delete Requests?")) {
             // Generate requests
+            $this->call("make:request", [
+                'name' => $this->getNameInput() . '/Search' . Str::singular($this->getNameInput()) . 'Request'
+            ]);
             $this->call("make:request", [
                 'name' => $this->getNameInput() . '/Store' . Str::singular($this->getNameInput()) . 'Request'
             ]);
             $this->call("make:request", [
                 'name' => $this->getNameInput() . '/Update' . Str::singular($this->getNameInput()) . 'Request'
+            ]);
+            $this->call("make:request", [
+                'name' => $this->getNameInput() . '/Delete' . Str::singular($this->getNameInput()) . 'Request'
             ]);
             $generated['requests'] = true;
             $this->info("<bg=red>\nWARNING: Don't forget to set the request 'authorization' parameter to true\n</>");
