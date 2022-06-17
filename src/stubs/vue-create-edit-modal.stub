@@ -80,9 +80,9 @@ export default {
     },
 
     methods: {
-        ...mapActions('{{ class_lower }}', {
-            update: 'update{{ class }}',
-            store: 'store{{ class }}',
+        ...mapActions('{{ class_lower_singluar }}', {
+            update: 'update{{ class_upper_singular }}',
+            store: 'store{{ class_upper_singular }}',
         }),
 
         closeModal() {
