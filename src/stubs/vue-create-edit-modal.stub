@@ -80,7 +80,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('{{ class_lower_singluar }}', {
+        ...mapActions('{{ class_lower_singular }}', {
             update: 'update{{ class_upper_singular }}',
             store: 'store{{ class_upper_singular }}',
         }),

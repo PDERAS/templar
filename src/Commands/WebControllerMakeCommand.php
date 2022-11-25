@@ -106,7 +106,7 @@ class WebControllerMakeCommand extends GeneratorCommand
         // Replace {{ class_lower }} with lowercase $class plural (i.e members)
         $replaced_lower = str_replace(['{{ class_lower }}'], strtolower($class), $replaced_upper);
 
-        // Replace {{ class_lower_singluar }} with lowercase $class singular (i.e member)
+        // Replace {{ class_lower_singular }} with lowercase $class singular (i.e member)
         $replaced_lower_singular = str_replace(['{{ class_lower_singular }}'], Str::singular(strtolower($class)), $replaced_lower);
 
         // Replace {{ class_upper_singular }} with uppercase first $class plural (i.e Member)
