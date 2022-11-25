@@ -3,11 +3,11 @@ import { axios } from '@pderas/axios-helper';
 /**
  * Fetches the {{ class_lower_singular }}
  *
- * @param {Object} payload
+ * @param {Object} params
  *
  * @return {Promise}
  */
-export const Search{{ class }} = payload => axios.get('/api/v1/{{ class_lower }}', { payload });
+export const Search{{ class }} = params => axios.get('/api/v1/{{ class_lower }}', { params });
 
 /**
  * Store new {{ class_lower_singular }}
