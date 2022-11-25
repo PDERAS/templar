@@ -71,7 +71,7 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 export default {
     data: _ => ({
         searchTerm: '',
-        page: 1
+        currentPage: 1
     }),
 
     computed: {
@@ -126,11 +126,11 @@ export default {
                         mode: 'Edit'
                     }
                 }).then(_ => {
-                    this.search({searchTerm: this.searchTerm, page: this.page});
+                    this.search({searchTerm: this.searchTerm, page: this.currentPage});
                 });
             } else {
                 this.$modals.show(modal).then(_ => {
-                    this.search({searchTerm: this.searchTerm, page: this.page});
+                    this.search({searchTerm: this.searchTerm, page: this.currentPage});
                 });
             }
         },
@@ -140,7 +140,7 @@ export default {
         },
 
         paginate({ page }) {
-            this.page = page;
+            this.currentPage = page;
             this.search({searchTerm: this.searchTerm, page: page});
         }
     }
