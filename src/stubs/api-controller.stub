@@ -22,7 +22,7 @@ class {{ class_upper_singular }}Controller extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function search(Search{{ class_upper_singular }}Request $request)
+    public function index(Search{{ class_upper_singular }}Request $request)
     {
         Vuex::load('{{ class_lower_singular }}', 'all');
 
