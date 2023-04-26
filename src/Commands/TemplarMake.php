@@ -70,6 +70,7 @@ class TemplarMake extends Command
             'api-wrapper' => false,
             'web-controller' => false,
             'api-controller' => false,
+            'service' => false,
             'vuex-module-loader' => false,
             'requests' => false,
             'web-php' => false,
@@ -111,6 +112,15 @@ class TemplarMake extends Command
             // Make php file for API Controller
             $this->call("make:api-controller", ['name' => $this->getNameInput()]);
             $generated['api-controller'] = true;
+
+            // Create HandlesException trait
+            $this->call("make:handles-exceptions");
+        }
+
+        if ($ignore_prompt || $this->confirm("Generate Service?")) {
+            // Make php file for Service
+            $this->call("make:service", ['name' => $this->getNameInput()]);
+            $generated['service'] = true;
         }
 
         if ($ignore_prompt || $this->confirm("Generate Vuex Module Loader?")) {

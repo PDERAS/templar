@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Traits;
+
+use Exception;
+use Log;
+
+trait HandlesExceptions
+{
+    /**
+     * Logs exceptions and returns toast
+     *
+     * @param  Exception $e
+     * @param  string $message
+     * @param  string $title
+     * @param  int $code
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    private function handleException(Exception $e, string $message, string $title = 'Error', int $code = 400)
+    {
+        Log::error($e);
+
+        if (config('app.debug')) {
+            $error_message = $this->getDebugErrorMessage($e);
+        } else {
+            $error_message = $message ?? 'An error occurred.';
+        }
+        return response()->vuex([
+            'toast' => [
+                'title'   => $title,
+                'message' => $error_message
+            ]
+        ], $code);
+    }
+
+    /**
+     * Get formatted debug error message
+     *
+     * @param  Exception $e
+     * @return string
+     */
+    private function getDebugErrorMessage(Exception $e)
+    {
+        return $e->getMessage() . ' @ ' . $e->getLine() . ':' . $e->getFile();
+    }
+}
