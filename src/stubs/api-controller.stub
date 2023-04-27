@@ -63,7 +63,7 @@ class {{ class_upper_singular }}Controller extends Controller
     {
         try {
             $this->{{ class_lower_singular }}Service->store($request->validated());
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $this->handleException(
                 $e,
                 'There was a problem saving {{ class_lower_singular }}.'
@@ -87,7 +87,7 @@ class {{ class_upper_singular }}Controller extends Controller
     {
         try {
             $this->{{ class_lower_singular }}Service->update(${{ class_lower_singular }}, $request->validated());
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $this->handleException(
                 $e,
                 'There was a problem updating {{ class_lower_singular }}.'
@@ -111,7 +111,7 @@ class {{ class_upper_singular }}Controller extends Controller
     {
         try {
             $this->{{ class_lower_singular }}Service->destroy(${{ class_lower_singular }});
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $this->handleException(
                 $e,
                 'There was a problem deleting {{ class_lower_singular }}.'

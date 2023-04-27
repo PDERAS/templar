@@ -32,7 +32,7 @@
 
 <script>
 import ModalWrapper from '@/components/ModalWrapper';
-import { mapActions, mapState, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     components: {
@@ -62,10 +62,6 @@ export default {
     },
 
     computed: {
-        ...mapState('app/options', [
-            'roles'
-        ]),
-
         ...mapGetters('app/loaders', [
             'isLoading'
         ]),
@@ -75,7 +71,7 @@ export default {
         },
 
         header() {
-            return this.mode + ' {{ class }}';
+            return this.mode + ' {{ class_upper_singular }}';
         }
     },
 
