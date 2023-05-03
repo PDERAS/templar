@@ -12,9 +12,32 @@ use App\Http\Requests\{{ class }}\Delete{{ class_upper_singular }}Request;
 use App\Models\{{ class_upper_singular }};
 // Misc
 use Pderas\VuexHydrate\Facades\Vuex;
+use App\Traits\HandlesExceptions;
+// Service
+use App\Services\{{ class_upper_singular }}Service;
 
 class {{ class_upper_singular }}Controller extends Controller
 {
+    use HandlesExceptions;
+
+    /**
+     * Service class
+     *
+     * @var \App\Services\{{ class_upper_singular }}Service
+     */
+    private {{ class_upper_singular }}Service ${{ class_lower_singular }}Service;
+
+    /**
+     * Controller constructor with injected service dependency
+     *
+     * @param  \App\Services\{{ class_upper_singular }}Service ${{ class_lower_singular }}Service
+     * @return void
+     */
+    public function __construct({{ class_upper_singular }}Service ${{ class_lower_singular }}Service)
+    {
+        $this->{{ class_lower_singular }}Service = ${{ class_lower_singular }}Service;
+    }
+
     /**
      * {{ class_upper_singular }} search
      *
@@ -22,7 +45,7 @@ class {{ class_upper_singular }}Controller extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function search(Search{{ class_upper_singular }}Request $request)
+    public function index(Search{{ class_upper_singular }}Request $request)
     {
         Vuex::load('{{ class_lower_singular }}', 'all');
 
@@ -38,11 +61,14 @@ class {{ class_upper_singular }}Controller extends Controller
      */
     public function store(Store{{ class_upper_singular }}Request $request)
     {
-        ${{ class_lower_singular }} = new {{ class_upper_singular }};
-
-        // Your Code Here
-
-        ${{ class_lower_singular }}->save();
+        try {
+            $this->{{ class_lower_singular }}Service->store($request->validated());
+        } catch (\Throwable $e) {
+            return $this->handleException(
+                $e,
+                'There was a problem saving {{ class_lower_singular }}.'
+            );
+        }
 
         Vuex::load('{{ class_lower_singular }}', 'all');
 
@@ -59,9 +85,14 @@ class {{ class_upper_singular }}Controller extends Controller
      */
     public function update({{ class_upper_singular }} ${{ class_lower_singular }}, Update{{ class_upper_singular }}Request $request)
     {
-        // Your Code Here
-
-        ${{ class_lower_singular }}->save();
+        try {
+            $this->{{ class_lower_singular }}Service->update(${{ class_lower_singular }}, $request->validated());
+        } catch (\Throwable $e) {
+            return $this->handleException(
+                $e,
+                'There was a problem updating {{ class_lower_singular }}.'
+            );
+        }
 
         Vuex::load('{{ class_lower_singular }}', 'all');
 
@@ -78,7 +109,14 @@ class {{ class_upper_singular }}Controller extends Controller
      */
     public function destroy({{ class_upper_singular }} ${{ class_lower_singular }}, Delete{{ class_upper_singular }}Request $request)
     {
-        ${{ class_lower_singular }}->delete();
+        try {
+            $this->{{ class_lower_singular }}Service->destroy(${{ class_lower_singular }});
+        } catch (\Throwable $e) {
+            return $this->handleException(
+                $e,
+                'There was a problem deleting {{ class_lower_singular }}.'
+            );
+        }
 
         Vuex::load('{{ class_lower_singular }}', 'all');
 

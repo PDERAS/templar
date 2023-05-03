@@ -70,6 +70,7 @@ class TemplarMake extends Command
             'api-wrapper' => false,
             'web-controller' => false,
             'api-controller' => false,
+            'service' => false,
             'vuex-module-loader' => false,
             'requests' => false,
             'web-php' => false,
@@ -111,6 +112,15 @@ class TemplarMake extends Command
             // Make php file for API Controller
             $this->call("make:api-controller", ['name' => $this->getNameInput()]);
             $generated['api-controller'] = true;
+
+            // Create HandlesException trait
+            $this->call("make:handles-exceptions");
+        }
+
+        if ($ignore_prompt || $this->confirm("Generate Service?")) {
+            // Make php file for Service
+            $this->call("make:service", ['name' => $this->getNameInput()]);
+            $generated['service'] = true;
         }
 
         if ($ignore_prompt || $this->confirm("Generate Vuex Module Loader?")) {
@@ -140,21 +150,46 @@ class TemplarMake extends Command
 
         if ($ignore_prompt || $this->confirm("Write endpoint route to web.php file?")) {
             // Write the import to web.php
+
+            // String after other imports
+            $search_string =
+                "\n\n/*" .
+                "\n|--------------------------------------------------------------------------";
             $web_string_controller_import =
                 "\nuse App\\Http\\Controllers\\{$class_singular}Controller;";
 
+            $replace_string = $web_string_controller_import . $search_string;
+            $this->files->replaceInFile(
+                $search_string,
+                $replace_string,
+                base_path('routes/web.php'),
+            );
+
+            // Write the web prefix
+            $web_route_prefix =
+            "\nRoute::middleware(['auth'])->group(function () {";
+
             $this->files->append(
                 base_path('routes/web.php'),
-                $web_string_controller_import
+                $web_route_prefix
             );
 
             // Write the GET route to web.php
             $web_string_get =
-                "\nRoute::get('/$class_lower_plural', [{$class_singular}Controller::class, '{$class_lower_plural}Page'])->name('{$this->getNameInput()}/{$this->getNameInput()}Page');";
+            "\n\tRoute::get('/$class_lower_plural', [{$class_singular}Controller::class, '{$class_lower_plural}Page'])->name('{$this->getNameInput()}/{$this->getNameInput()}Page');";
 
             $this->files->append(
                 base_path('routes/web.php'),
                 $web_string_get
+            );
+
+            // Write the route postfix
+            $web_route_postfix =
+                "\n});";
+
+            $this->files->append(
+                base_path('routes/web.php'),
+                $web_route_postfix
             );
 
             $generated['web-php'] = true;
@@ -163,57 +198,35 @@ class TemplarMake extends Command
 
         if ($ignore_prompt || $this->confirm("Write CRUD endpoint route to api.php file?")) {
             // Write the controller import to api.php
+            $search_string =
+                "\n\n/*" .
+                "\n|--------------------------------------------------------------------------";
             $api_string_controller_import =
                 "\nuse App\\Http\\Controllers\\Api\\{$class_singular}Controller;";
 
-            $this->files->append(
+            $replace_string = $api_string_controller_import . $search_string;
+            $this->files->replaceInFile(
+                $search_string,
+                $replace_string,
                 base_path('routes/api.php'),
-                $api_string_controller_import
             );
 
             // Write the route prefix
             $api_route_prefix =
-                "\nRoute::middleware('auth:sanctum')->prefix('v1/$class_lower_plural')->middleware('role:super_admin')->group(function () {";
+            "\nRoute::middleware('auth:sanctum')->prefix('v1')->middleware('role:super_admin')->group(function () {";
 
             $this->files->append(
                 base_path('routes/api.php'),
                 $api_route_prefix
             );
 
-            // Write the GET (search) route to api.php
-            $api_string_get =
-                "\n\tRoute::get('/', [{$class_singular}Controller::class, 'search']);";
+            // Write the RESOURCE route to api.php
+            $api_string_resource =
+            "\n\tRoute::apiResource('{$class_lower_plural}', {$class_singular}Controller::class)->except('show');";
 
             $this->files->append(
                 base_path('routes/api.php'),
-                $api_string_get
-            );
-
-            // Write the POST (store) route to api.php
-            $api_string_get =
-                "\n\tRoute::post('/', [{$class_singular}Controller::class, 'store']);";
-
-            $this->files->append(
-                base_path('routes/api.php'),
-                $api_string_get
-            );
-
-            // Write the PATCH (update) route to api.php
-            $api_string_get =
-                "\n\tRoute::patch('/{{$class_lower}}', [{$class_singular}Controller::class, 'update']);";
-
-            $this->files->append(
-                base_path('routes/api.php'),
-                $api_string_get
-            );
-
-            // Write the DELETE (destroy) route to api.php
-            $api_string_get =
-                "\n\tRoute::delete('/{{$class_lower}}', [{$class_singular}Controller::class, 'destroy']);";
-
-            $this->files->append(
-                base_path('routes/api.php'),
-                $api_string_get
+                $api_string_resource
             );
 
             // Write the route postfix

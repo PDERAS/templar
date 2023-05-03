@@ -1,11 +1,13 @@
 <template>
 <MainContentLayout>
-    <template v-slot:breadcrumb>
-        <div class="text-primary-dark font-bold">{{ class }}</div><div class="ml-2">> Listing</div>
+    <template #breadcrumb>
+        <div class="text-primary-dark font-bold">{{ class }}</div>
+        <FontAwesomeIcon icon="chevron-right" class="ml-2" />
+        <div class="ml-2">Listing</div>
     </template>
-    <template v-slot:title>{{ class }}</template>
-    <template v-slot:actions>
-        <StyledButton size="small" mode="secondary" @click="openModal('{{ class }}Modal')">
+    <template #title>{{ class }}</template>
+    <template #actions>
+        <StyledButton size="small" mode="secondary" @click="open{{ class_upper_singular }}Modal">
             <FontAwesomeIcon icon="plus" class="mr-1" />
             Add {{ class_upper_singular }}
         </StyledButton>
@@ -24,7 +26,7 @@
                 {{ {{ class_lower_singular }}.hash }}
             </div>
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <StyledButton :full="true" size="small" @click="openModal('{{ class }}Modal', 'Edit', {{ class_lower_singular }})">Edit <FontAwesomeIcon icon="pencil" /></StyledButton>
+                <StyledButton :full="true" size="small" @click="open{{ class_upper_singular }}Modal({{ class_lower_singular }})">Edit <FontAwesomeIcon icon="pencil" /></StyledButton>
                 <StyledButton :full="true" size="small" @click="delete{{ class_upper_singular }}({{ class_lower_singular }})">Delete <FontAwesomeIcon icon="trash-alt" /></StyledButton>
             </div>
         </div>
@@ -42,7 +44,7 @@
                     {{ {{ class_lower_singular }}.hash }}
                 </TableCell>
                 <TableActions>
-                    <Action icon="pencil" @click="openModal('{{ class }}Modal', 'Edit', {{ class_lower_singular }})">Edit</Action>
+                    <Action icon="pencil" @click="open{{ class_upper_singular }}Modal({{ class_lower_singular }})">Edit</Action>
                     <Action icon="trash-alt" @click="delete{{ class_upper_singular }}({{ class_lower_singular }})">Delete</Action>
                 </TableActions>
             </template>
@@ -116,23 +118,14 @@ export default {
             }
         },
 
-        openModal(modal, mode = 'Create', {{ class_lower_singular }} = null) {
-            if (mode == 'Edit') {
-                this.$modals.show(modal, {
-                    props: {
-                        {{ class_lower_singular }}: {
-                            ...{{ class_lower_singular }}
-                        },
-                        mode: 'Edit'
-                    }
-                }).then(_ => {
-                    this.search({searchTerm: this.searchTerm, page: this.currentPage});
-                });
-            } else {
-                this.$modals.show(modal).then(_ => {
-                    this.search({searchTerm: this.searchTerm, page: this.currentPage});
-                });
-            }
+        open{{ class_upper_singular }}Modal({{ class_lower_singular }} = null) {
+            const props = {{ class_lower_singular }} ? { mode: 'Edit', {{ class_lower_singular }} } : {};
+
+            this.$modals.show('{{ class }}Modal', {
+                props
+            }).then(_ => {
+                this.search({searchTerm: this.searchTerm, page: this.currentPage});
+            });
         },
 
         search{{ class }}() {
@@ -146,3 +139,9 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.{{ class_lower }}-table {
+    --table-column-size: 1fr 150px;
+}
+</style>

@@ -9,6 +9,8 @@ use Pderas\Templar\Commands\TemplarMake;
 use Pderas\Templar\Commands\VueListingPageMakeCommand;
 use Pderas\Templar\Commands\VuexStoreMakeCommand;
 use Pderas\Templar\Commands\ApiWrapperMakeCommand;
+use Pderas\Templar\Commands\HandlesExceptionsMakeCommand;
+use Pderas\Templar\Commands\ServiceMakeCommand;
 use Pderas\Templar\Commands\VueCreateEditModalMakeCommand;
 use Pderas\Templar\Commands\VuexModuleLoaderMakeCommand;
 use Pderas\Templar\Commands\WebControllerMakeCommand;
@@ -41,6 +43,8 @@ class TemplarServiceProvider extends ServiceProvider
                 VueCreateEditModalMakeCommand::class,
                 WebControllerMakeCommand::class,
                 ApiControllerMakeCommand::class,
+                HandlesExceptionsMakeCommand::class,
+                ServiceMakeCommand::class,
                 VuexModuleLoaderMakeCommand::class
             ]);
         }

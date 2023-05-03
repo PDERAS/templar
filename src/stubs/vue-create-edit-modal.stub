@@ -1,7 +1,7 @@
 <template>
 <ModalWrapper body-class="modal-large-content" @close-request="$emit('close-modal')">
-    <template v-slot:header>{{ header }}</template>
-    <template v-slot:footer>
+    <template #header>{{ header }}</template>
+    <template #footer>
         <div class="flex flex-col md:flex-row md:justify-end items-center">
             <button
                 :disabled="saving"
@@ -21,7 +21,7 @@
     <form @submit.prevent="submitForm">
         <div class="md:grid md:grid-cols-3 gap-x-4">
             <!-- Add Input Fields Here
-                <StyledInput
+            <StyledInput
                 v-model="form.first_name"
                 name="first_name"
                 label="First Name" /> -->
@@ -32,7 +32,7 @@
 
 <script>
 import ModalWrapper from '@/components/ModalWrapper';
-import { mapActions, mapState, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     components: {
@@ -57,15 +57,11 @@ export default {
 
     data() {
         return {
-            form: this.{{ class_lower_singular }},
+            form: { ...this.{{ class_lower_singular }} },
         };
     },
 
     computed: {
-        ...mapState('app/options', [
-            'roles'
-        ]),
-
         ...mapGetters('app/loaders', [
             'isLoading'
         ]),
@@ -75,7 +71,7 @@ export default {
         },
 
         header() {
-            return this.mode + ' {{ class }}';
+            return this.mode + ' {{ class_upper_singular }}';
         }
     },
 
@@ -91,20 +87,18 @@ export default {
 
         async submitForm() {
             this.resetErrors();
-            if (this.mode === 'Create') {
-                await this.store({
-                    ...this.form,
-                }).then(_ => {
-                    this.$toast.success({ title: 'Success', message: '{{ class_lower_singular }} Created'});
-                });
-            } else {
-                await this.update({
-                    ...this.form,
-                    hash: this.{{ class_lower }}.hash,
-                }).then(_ => {
-                    this.$toast.success({ title: 'Success', message: '{{ class_lower_singular }} Updated'});
-                });
-            }
+
+            const action = this.mode === 'Create' ? this.store : this.update;
+
+            const payload = {
+                ...this.form,
+                hash: this.{{ class_lower_singular }}.hash
+            };
+
+            await action(payload).then(_ => {
+                this.$toast.success({ message: '{{ class_upper_singular }} Saved' });
+            });
+
             this.$emit('close-modal');
         }
     }

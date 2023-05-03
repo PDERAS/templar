@@ -5,29 +5,29 @@ namespace Pderas\Templar\Commands;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Illuminate\Support\Str;
 
-#[AsCommand(name: 'make:vue-listing')]
-class VueListingPageMakeCommand extends TemplarCommand
+#[AsCommand(name: 'make:service')]
+class ServiceMakeCommand extends TemplarCommand
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'make:vue-listing';
+    protected $name = 'make:service';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new vue listing file';
+    protected $description = 'Creates a new service file';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Vue';
+    protected $type = 'Service';
 
     /**
      * Get the destination class path.
@@ -39,7 +39,7 @@ class VueListingPageMakeCommand extends TemplarCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return base_path("resources/js/pages/$name/{$name}Page.vue");
+        return base_path("app/Services/" . Str::singular($name) . "Service.php");
     }
 
     /**
@@ -49,6 +49,6 @@ class VueListingPageMakeCommand extends TemplarCommand
      */
     protected function getStub()
     {
-        return base_path('vendor/pderas/templar/src/stubs/vue-listing-page.stub');
+        return base_path('vendor/pderas/templar/src/stubs/service.stub');
     }
 }
