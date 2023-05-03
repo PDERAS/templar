@@ -25,8 +25,8 @@ class {{ class_upper_singular }}Service
     /**
      * Update {{ class_lower_singular }}
      *
+     * @param  \App\Models\{{ class_upper_singular }} ${{ class_lower_singular }}
      * @param  array $attributes
-     * @param  \App\Models\{{ class_upper_singular }}
      * @return mixed
      */
     public function update({{ class_upper_singular }} ${{ class_lower_singular }}, array $attributes)
