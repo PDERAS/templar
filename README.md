@@ -10,6 +10,7 @@ This command will generate the following:
 - Vuex Modular Loader file
 - JS API wrapper file
 - An API Controller with stubbed functions
+- Service class with crud logic
 - Web Controller for viewing the listing page
 - Modify web.php
 - Modify api.php
@@ -35,13 +36,18 @@ To generate without question prompt
 
 `php artisan templar:make Members --all`
 
-You may pass lower case and non-plural `name` if you desire. Note that the command will automatically handle captalization and plural of a word using laravels built in Str::plural helper function.
+You may pass lower case and non-plural `name` if you desire. Note that the command will automatically handle capitalization and plural of a word using Laravel's built in Str::plural helper function.
 
 For example:
 
 `php artisan templar:make city --all`
 
 Will generate the correct Cities and City equivalent
+
+## Customizing ##
+The stub files can be published for customizing
+
+`php artisan templar:publish-stubs`
 
 ## ⚠️ Warning ⚠️
 The command does not generate the backing Model or Migration.

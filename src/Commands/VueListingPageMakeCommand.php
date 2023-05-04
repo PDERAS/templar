@@ -43,12 +43,12 @@ class VueListingPageMakeCommand extends TemplarCommand
     }
 
     /**
-     * Get the stub file for the generator.
+     * Get the stub filename for the generator.
      *
      * @return string
      */
-    protected function getStub()
+    protected function getStubFilename()
     {
-        return base_path('vendor/pderas/templar/src/stubs/vue-listing-page.stub');
+        return 'vue-listing-page.stub';
     }
 }
