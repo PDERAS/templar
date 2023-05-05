@@ -21,6 +21,13 @@ abstract class TemplarCommand extends GeneratorCommand
     }
 
     /**
+     * Get the stub filename for the generator.
+     *
+     * @return string
+     */
+    protected abstract function getStubFilename();
+
+    /**
      * Execute the console command.
      *
      * @return void
