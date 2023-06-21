@@ -43,12 +43,12 @@ class VueCreateEditModalMakeCommand extends TemplarCommand
     }
 
     /**
-     * Get the stub file for the generator.
+     * Get the stub filename for the generator.
      *
      * @return string
      */
-    protected function getStub()
+    protected function getStubFilename()
     {
-        return base_path('vendor/pderas/templar/src/stubs/vue-create-edit-modal.stub');
+        return 'vue-create-edit-modal.stub';
     }
 }

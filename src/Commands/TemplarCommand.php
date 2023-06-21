@@ -4,6 +4,7 @@ namespace Pderas\Templar\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 abstract class TemplarCommand extends GeneratorCommand
@@ -18,6 +19,13 @@ abstract class TemplarCommand extends GeneratorCommand
     {
         parent::__construct($files);
     }
+
+    /**
+     * Get the stub filename for the generator.
+     *
+     * @return string
+     */
+    protected abstract function getStubFilename();
 
     /**
      * Execute the console command.
@@ -65,5 +73,25 @@ abstract class TemplarCommand extends GeneratorCommand
 
         // Replace {{ class_upper_singular }} with uppercase first $class plural (i.e Member)
         return str_replace(['{{ class_upper_singular }}'], Str::singular(Str::ucfirst($class)), $replaced_lower_singular);
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        $filename = $this->getStubFilename();
+
+        // Custom stub
+        $path = base_path('stubs/' . $filename);
+
+        // Use default if custom stub doesn't exist
+        if (!File::exists($path)) {
+            $path = realpath(__DIR__ . '/../stubs/' . $filename);
+        }
+
+        return $path;
     }
 }

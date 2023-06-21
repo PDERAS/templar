@@ -43,12 +43,12 @@ class VuexStoreMakeCommand extends TemplarCommand
     }
 
     /**
-     * Get the stub file for the generator.
+     * Get the stub filename for the generator.
      *
      * @return string
      */
-    protected function getStub()
+    protected function getStubFilename()
     {
-        return base_path('vendor/pderas/templar/src/stubs/vuex-store.stub');
+        return 'vuex-store.stub';
     }
 }
