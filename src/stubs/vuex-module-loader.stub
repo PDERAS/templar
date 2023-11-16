@@ -10,27 +10,25 @@ class {{ class_upper_singular }}ModuleLoader extends VuexLoader
     /**
      * Index of all {{ class_lower }}
      *
-     * @return Object
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function all()
     {
-        ${{ class_lower }} = {{ class_upper_singular }}::query();
+        ${{ class_snake_singular }} = {{ class_upper_singular }}::query();
 
-        if (request()->filled('searchTerm')) {
-            $search_term = request()->searchTerm;
+        $search_term = request('searchTerm');
 
-            /*
+        /*
 
-            //  Your search query here...
+        //  Your search query here...
 
-            ${{ class_lower }}->where(function ($query) use ($search_term) {
-                $query->where('column', 'like', "%{$search_term}%");
-            });
+        ${{ class_snake_singular }}->when($search_term, function ($query) use ($search_term) {
+            $query->where('column', 'like', "%{$search_term}%");
+        });
 
-            */
-        }
+        */
 
-        return ${{ class_lower }}
+        return ${{ class_snake_singular }}
             ->paginate();
     }
 }

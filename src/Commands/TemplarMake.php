@@ -58,9 +58,8 @@ class TemplarMake extends Command
         $ignore_prompt = trim($this->option('all'));
 
         // Extras
-        $class_lower_plural = Str::lower($this->getNameInput());
+        $class_lower_plural = Str::camel($this->getNameInput());
         $class_singular = Str::singular($this->getNameInput());
-        $class_lower = Str::lower(Str::singular($class_singular));
 
         // Keep track of what was generateed
         $generated = [

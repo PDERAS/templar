@@ -71,7 +71,7 @@ export default {
         },
 
         header() {
-            return this.mode + ' {{ class_upper_singular }}';
+            return this.mode + ' {{ class_word }}';
         }
     },
 
