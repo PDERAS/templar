@@ -25,17 +25,17 @@ class {{ class_upper_singular }}Controller extends Controller
      *
      * @var \App\Services\{{ class_upper_singular }}Service
      */
-    private {{ class_upper_singular }}Service ${{ class_lower_singular }}Service;
+    private {{ class_upper_singular }}Service ${{ class_snake_singular }}_service;
 
     /**
      * Controller constructor with injected service dependency
      *
-     * @param  \App\Services\{{ class_upper_singular }}Service ${{ class_lower_singular }}Service
+     * @param  \App\Services\{{ class_upper_singular }}Service ${{ class_snake_singular }}_service
      * @return void
      */
-    public function __construct({{ class_upper_singular }}Service ${{ class_lower_singular }}Service)
+    public function __construct({{ class_upper_singular }}Service ${{ class_snake_singular }}_service)
     {
-        $this->{{ class_lower_singular }}Service = ${{ class_lower_singular }}Service;
+        $this->{{ class_snake_singular }}_service = ${{ class_snake_singular }}_service;
     }
 
     /**
@@ -53,7 +53,7 @@ class {{ class_upper_singular }}Controller extends Controller
     }
 
     /**
-     * Store a {{ class_lower_singular }}
+     * Store {{ class_upper_singular }}
      *
      * @param \App\Http\Requests\{{ class }}\Store{{ class_upper_singular }}Request $request
      *
@@ -62,11 +62,11 @@ class {{ class_upper_singular }}Controller extends Controller
     public function store(Store{{ class_upper_singular }}Request $request)
     {
         try {
-            $this->{{ class_lower_singular }}Service->store($request->validated());
+            $this->{{ class_snake_singular }}_service->store($request->validated());
         } catch (\Throwable $e) {
             return $this->handleException(
                 $e,
-                'There was a problem saving {{ class_lower_singular }}.'
+                'There was a problem saving {{ class_word }}.'
             );
         }
 
@@ -76,21 +76,21 @@ class {{ class_upper_singular }}Controller extends Controller
     }
 
     /**
-     * Update a {{ class_lower_singular }}
+     * Update {{ class_upper_singular }}
      *
      * @param \App\Models\{{ class_upper_singular }}
      * @param App\Http\Requests\{{ class }}\Update{{ class_upper_singular }}Request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update({{ class_upper_singular }} ${{ class_lower_singular }}, Update{{ class_upper_singular }}Request $request)
+    public function update({{ class_upper_singular }} ${{ class_snake_singular }}, Update{{ class_upper_singular }}Request $request)
     {
         try {
-            $this->{{ class_lower_singular }}Service->update(${{ class_lower_singular }}, $request->validated());
+            $this->{{ class_snake_singular }}_service->update(${{ class_snake_singular }}, $request->validated());
         } catch (\Throwable $e) {
             return $this->handleException(
                 $e,
-                'There was a problem updating {{ class_lower_singular }}.'
+                'There was a problem updating {{ class_word }}.'
             );
         }
 
@@ -100,21 +100,21 @@ class {{ class_upper_singular }}Controller extends Controller
     }
 
     /**
-     * Delete a {{ class_lower_singular }}
+     * Delete {{ class_upper_singular }}
      *
-     * @param {{ class_upper_singular }} ${{ class_lower_singular }}
+     * @param {{ class_upper_singular }} ${{ class_snake_singular }}
      * @param \App\Http\Requests\{{ class }}\Delete{{ class_upper_singular }}Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy({{ class_upper_singular }} ${{ class_lower_singular }}, Delete{{ class_upper_singular }}Request $request)
+    public function destroy({{ class_upper_singular }} ${{ class_snake_singular }}, Delete{{ class_upper_singular }}Request $request)
     {
         try {
-            $this->{{ class_lower_singular }}Service->destroy(${{ class_lower_singular }});
+            $this->{{ class_snake_singular }}_service->destroy(${{ class_snake_singular }});
         } catch (\Throwable $e) {
             return $this->handleException(
                 $e,
-                'There was a problem deleting {{ class_lower_singular }}.'
+                'There was a problem deleting {{ class_word }}.'
             );
         }
 

@@ -62,17 +62,27 @@ abstract class TemplarCommand extends GeneratorCommand
 
         $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
-        // Replace {{ class }} with uppercase first $class plural (i.e Members)
+        $class_lower = Str::camel($class);
+
+        $class_snake = Str::snake($class);
+
+        // Replace {{ class }} with uppercase first $class plural (i.e MemberStatuses)
         $replaced_upper = str_replace(['{{ class }}'], $class, $stub);
 
-        // Replace {{ class_lower }} with lowercase $class plural (i.e members)
-        $replaced_lower = str_replace(['{{ class_lower }}'], strtolower($class), $replaced_upper);
+        // Replace {{ class_lower }} with lowercase $class plural (i.e memberStatuses)
+        $replaced_lower = str_replace(['{{ class_lower }}'], $class_lower, $replaced_upper);
 
-        // Replace {{ class_lower_singular }} with lowercase $class singular (i.e member)
-        $replaced_lower_singular = str_replace(['{{ class_lower_singular }}'], Str::singular(strtolower($class)), $replaced_lower);
+        // Replace {{ class_lower_singular }} with lowercase $class singular (i.e memberStatus)
+        $replaced_lower_singular = str_replace(['{{ class_lower_singular }}'], Str::singular($class_lower), $replaced_lower);
 
-        // Replace {{ class_upper_singular }} with uppercase first $class plural (i.e Member)
-        return str_replace(['{{ class_upper_singular }}'], Str::singular(Str::ucfirst($class)), $replaced_lower_singular);
+        // Replace {{ class_word }} with lowercase $class spaced (i.e member status)
+        $replaced_class_word = str_replace(['{{ class_word }}'], Str::of($class_snake)->singular()->replace('_', ' '), $replaced_lower_singular);
+
+        // Replace {{ class_snake_singular }} with lowercase $class snake singular (i.e member_status)
+        $replaced_snake_singular = str_replace(['{{ class_snake_singular }}'], Str::singular($class_snake), $replaced_class_word);
+
+        // Replace {{ class_upper_singular }} with uppercase first $class plural (i.e MemberStatuses)
+        return str_replace(['{{ class_upper_singular }}'], Str::singular(Str::ucfirst($class_lower)), $replaced_snake_singular);
     }
 
     /**

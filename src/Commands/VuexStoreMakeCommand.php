@@ -39,7 +39,7 @@ class VuexStoreMakeCommand extends TemplarCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return base_path("resources/js/store/modules/" . Str::singular(strtolower($name)) . ".js");
+        return base_path("resources/js/store/modules/" . Str::singular(Str::camel($name)) . ".js");
     }
 
     /**

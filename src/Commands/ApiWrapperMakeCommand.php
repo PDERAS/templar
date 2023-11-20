@@ -39,7 +39,7 @@ class ApiWrapperMakeCommand extends TemplarCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return base_path("resources/js/api/" . Str::singular(strtolower($name)) . ".js");
+        return base_path("resources/js/api/" . Str::singular(Str::camel($name)) . ".js");
     }
 
     /**

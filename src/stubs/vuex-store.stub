@@ -43,7 +43,7 @@ const actions = {
     },
 
     /**
-     * Store new {{ class_lower_singular }}
+     * Store new {{ class_word }}
      *
      * @param {Object} payload
      *
@@ -54,7 +54,7 @@ const actions = {
     },
 
     /**
-     * Update {{ class_lower_singular }}
+     * Update {{ class_word }}
      *
      * @param {Object} payload
      *
@@ -65,7 +65,7 @@ const actions = {
     },
 
     /**
-     * Delete {{ class_lower_singular }}
+     * Delete {{ class_word }}
      *
      * @param {Object} payload
      *

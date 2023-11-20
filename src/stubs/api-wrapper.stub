@@ -1,7 +1,7 @@
 import { axios } from '@pderas/axios-helper';
 
 /**
- * Fetches the {{ class_lower_singular }}
+ * Fetches the {{ class_word }}
  *
  * @param {Object} params
  *
@@ -10,7 +10,7 @@ import { axios } from '@pderas/axios-helper';
 export const Search{{ class }} = params => axios.get('/api/v1/{{ class_lower }}', { params });
 
 /**
- * Store new {{ class_lower_singular }}
+ * Store new {{ class_word }}
  *
  * @param {Object} payload
  *
@@ -19,7 +19,7 @@ export const Search{{ class }} = params => axios.get('/api/v1/{{ class_lower }}'
 export const Store{{ class_upper_singular }} = payload => axios.post('/api/v1/{{ class_lower }}', payload);
 
 /**
- * Update {{ class_lower_singular }}
+ * Update {{ class_word }}
  *
  * @param {Object} payload
  *
@@ -28,7 +28,7 @@ export const Store{{ class_upper_singular }} = payload => axios.post('/api/v1/{{
 export const Update{{ class_upper_singular }} = payload => axios.patch('/api/v1/{{ class_lower }}/' + payload.hash, payload);
 
 /**
- * Delete a {{ class_lower_singular }}
+ * Delete {{ class_word }}
  *
  * @param {Object} payload
  *
