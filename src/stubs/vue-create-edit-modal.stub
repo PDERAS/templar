@@ -1,24 +1,44 @@
-<template>
-<ModalWrapper body-class="modal-large-content" @close-request="$emit('close-modal')">
-    <template #header>{{ header }}</template>
-    <template #footer>
-        <div class="flex flex-col md:flex-row md:justify-end items-center">
-            <button
-                :disabled="saving"
-                class="button bg-primary"
-                type="button"
-                @click="submitForm">
-                <FontAwesomeIcon
-                    v-if="saving"
-                    icon="circle-notch"
-                    class="text-sm"
-                    spin />
-                Save Changes
-            </button>
-        </div>
-    </template>
+<script setup>
+import ModalWrapper from '@/modals/ModalWrapper';
+import { ref } from 'vue';
+import { use{{ class_upper_singular }}Store } from '@/stores/{{ class_lower_singular }}';
 
-    <form @submit.prevent="submitForm">
+const props = defineProps({
+    {{ class_lower_singular }}: {
+        type: Object,
+        default: () => ({
+            //
+        })
+    },
+    mode: {
+        type: String,
+        default: 'Create'
+    }
+});
+
+const emit = defineEmits(['close-modal']);
+const { store{{ class_upper_singular }}, update{{ class_upper_singular }} } = use{{ class_upper_singular }}Store();
+
+const form = ref({
+    ...props.{{ class_lower_singular }},
+});
+
+const save = async () => {
+    const action = props.mode === 'Create' ? store{{ class_upper_singular }} : update{{ class_upper_singular }};
+    await action({
+        ...form.value,
+    });
+
+    emit('close-modal');
+};
+</script>
+
+<template>
+<ModalWrapper>
+    <template #header>{{ mode }} {{ class_title }}</template>
+    <template #subheader>Create or edit a {{ class_word }}</template>
+
+    <form @submit.prevent="save">
         <div class="md:grid md:grid-cols-3 gap-x-4">
             <!-- Add Input Fields Here
             <StyledInput
@@ -27,80 +47,9 @@
                 label="First Name" /> -->
         </div>
     </form>
+
+    <template #footer>
+        <StyledSaveButton modal @save="save" />
+    </template>
 </ModalWrapper>
 </template>
-
-<script>
-import ModalWrapper from '@/components/ModalWrapper';
-import { mapActions, mapGetters } from 'vuex';
-
-export default {
-    components: {
-        ModalWrapper
-    },
-
-    props: {
-        {{ class_lower_singular }}: {
-            type: Object,
-            default() {
-                return {
-                    hash: null,
-                };
-            }
-        },
-
-        mode: {
-            type: String,
-            default: 'Create'
-        }
-    },
-
-    data() {
-        return {
-            form: { ...this.{{ class_lower_singular }} },
-        };
-    },
-
-    computed: {
-        ...mapGetters('app/loaders', [
-            'isLoading'
-        ]),
-
-        saving() {
-            return this.isLoading('/api/v1/{{ class_lower }}', 'post') || this.isLoading('/api/v1/{{ class_lower }}/' + this.form.hash, 'patch');
-        },
-
-        header() {
-            return this.mode + ' {{ class_word }}';
-        }
-    },
-
-    methods: {
-        ...mapActions('{{ class_lower_singular }}', {
-            update: 'update{{ class_upper_singular }}',
-            store: 'store{{ class_upper_singular }}',
-        }),
-
-        closeModal() {
-            this.$emit('close-modal');
-        },
-
-        async submitForm() {
-            this.resetErrors();
-
-            const action = this.mode === 'Create' ? this.store : this.update;
-
-            const payload = {
-                ...this.form,
-                hash: this.{{ class_lower_singular }}.hash
-            };
-
-            await action(payload).then(_ => {
-                this.$toast.success({ message: '{{ class_upper_singular }} Saved' });
-            });
-
-            this.$emit('close-modal');
-        }
-    }
-};
-</script>

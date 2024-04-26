@@ -4,6 +4,7 @@ namespace App\VuexLoaders;
 
 use App\Models\{{ class_upper_singular }};
 use Pderas\VuexHydrate\Support\VuexLoader;
+use Illuminate\Support\Arr;
 
 class {{ class_upper_singular }}ModuleLoader extends VuexLoader
 {
@@ -14,21 +15,27 @@ class {{ class_upper_singular }}ModuleLoader extends VuexLoader
      */
     public function all()
     {
-        ${{ class_snake_singular }} = {{ class_upper_singular }}::query();
+        ${{ class_lower }} = {{ class_upper_singular }}::query();
 
-        $search_term = request('searchTerm');
+        $search_term = request('term');
 
         /*
 
         //  Your search query here...
 
-        ${{ class_snake_singular }}->when($search_term, function ($query) use ($search_term) {
+        ${{ class_lower }}->when($search_term, function ($query) use ($search_term) {
             $query->where('column', 'like', "%{$search_term}%");
         });
 
+        $default_sort = ['column' => 'asc'];
+        $sort = Arr::wrap(request()->input('sort_by', $default_sort));
+        foreach ($sort as $column => $direction) {
+            ${{ class_lower }}->orderBy($column, $direction);
+        }
+
         */
 
-        return ${{ class_snake_singular }}
+        return ${{ class_lower }}
             ->paginate();
     }
 }

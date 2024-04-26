@@ -1,4 +1,4 @@
-import { axios } from '@pderas/axios-helper';
+import axios from 'axios';
 
 /**
  * Fetches the {{ class_word }}
@@ -7,7 +7,7 @@ import { axios } from '@pderas/axios-helper';
  *
  * @return {Promise}
  */
-export const Search{{ class }} = params => axios.get('/api/v1/{{ class_lower }}', { params });
+export const Search{{ class }} = params => axios.get('/api/v1/{{ class_kebab }}', { params });
 
 /**
  * Store new {{ class_word }}
@@ -16,7 +16,7 @@ export const Search{{ class }} = params => axios.get('/api/v1/{{ class_lower }}'
  *
  * @return {Promise}
  */
-export const Store{{ class_upper_singular }} = payload => axios.post('/api/v1/{{ class_lower }}', payload);
+export const Store{{ class_upper_singular }} = payload => axios.post('/api/v1/{{ class_kebab }}', payload);
 
 /**
  * Update {{ class_word }}
@@ -25,7 +25,7 @@ export const Store{{ class_upper_singular }} = payload => axios.post('/api/v1/{{
  *
  * @return {Promise}
  */
-export const Update{{ class_upper_singular }} = payload => axios.patch('/api/v1/{{ class_lower }}/' + payload.hash, payload);
+export const Update{{ class_upper_singular }} = payload => axios.patch('/api/v1/{{ class_kebab }}/' + payload.hash, payload);
 
 /**
  * Delete {{ class_word }}
@@ -34,4 +34,4 @@ export const Update{{ class_upper_singular }} = payload => axios.patch('/api/v1/
  *
  * @return {Promise}
  */
-export const Destroy{{ class_upper_singular }} = payload => axios.delete('/api/v1/{{ class_lower }}/' + payload.hash);
+export const Destroy{{ class_upper_singular }} = payload => axios.delete('/api/v1/{{ class_kebab }}/' + payload.hash);

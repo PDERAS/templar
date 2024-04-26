@@ -66,6 +66,8 @@ abstract class TemplarCommand extends GeneratorCommand
 
         $class_snake = Str::snake($class);
 
+        $class_word = Str::of($class_snake)->singular()->replace('_', ' ');
+
         // Replace {{ class }} with uppercase first $class plural (i.e MemberStatuses)
         $replaced_upper = str_replace(['{{ class }}'], $class, $stub);
 
@@ -76,13 +78,19 @@ abstract class TemplarCommand extends GeneratorCommand
         $replaced_lower_singular = str_replace(['{{ class_lower_singular }}'], Str::singular($class_lower), $replaced_lower);
 
         // Replace {{ class_word }} with lowercase $class spaced (i.e member status)
-        $replaced_class_word = str_replace(['{{ class_word }}'], Str::of($class_snake)->singular()->replace('_', ' '), $replaced_lower_singular);
+        $replaced_class_word = str_replace(['{{ class_word }}'], $class_word, $replaced_lower_singular);
+
+        // Replace {{ class_title }} with lowercase $class spaced (i.e Member Status)
+        $replaced_class_title = str_replace(['{{ class_title }}'], Str::of($class_word)->title(), $replaced_class_word);
 
         // Replace {{ class_snake_singular }} with lowercase $class snake singular (i.e member_status)
-        $replaced_snake_singular = str_replace(['{{ class_snake_singular }}'], Str::singular($class_snake), $replaced_class_word);
+        $replaced_snake_singular = str_replace(['{{ class_snake_singular }}'], Str::singular($class_snake), $replaced_class_title);
+
+        // Replace {{ class_kebab }} with lowercase $class kebab (i.e member-statuses)
+        $replaced_kebab = str_replace(['{{ class_kebab }}'], Str::kebab($class), $replaced_snake_singular);
 
         // Replace {{ class_upper_singular }} with uppercase first $class plural (i.e MemberStatuses)
-        return str_replace(['{{ class_upper_singular }}'], Str::singular(Str::ucfirst($class_lower)), $replaced_snake_singular);
+        return str_replace(['{{ class_upper_singular }}'], Str::singular(Str::ucfirst($class_lower)), $replaced_kebab);
     }
 
     /**

@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 
 class TemplarMake extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
@@ -60,6 +59,7 @@ class TemplarMake extends Command
         // Extras
         $class_lower_plural = Str::camel($this->getNameInput());
         $class_singular = Str::singular($this->getNameInput());
+        $class_kebab = Str::kebab($this->getNameInput());
 
         // Keep track of what was generateed
         $generated = [
@@ -150,19 +150,16 @@ class TemplarMake extends Command
         if ($ignore_prompt || $this->confirm("Write endpoint route to web.php file?")) {
             // Write the import to web.php
 
-            // String after other imports
-            $search_string =
-                "\n\n/*" .
-                "\n|--------------------------------------------------------------------------";
-            $web_string_controller_import =
-                "\nuse App\\Http\\Controllers\\{$class_singular}Controller;";
+            $web_contents = $this->files->get(base_path('routes/web.php'));
 
-            $replace_string = $web_string_controller_import . $search_string;
-            $this->files->replaceInFile(
-                $search_string,
-                $replace_string,
-                base_path('routes/web.php'),
-            );
+            // String after other imports
+            $search_string = 'use App\Http\Controllers';
+            $last_use_statement = strpos($web_contents, PHP_EOL, strrpos($web_contents, $search_string));
+
+            $web_replacement = "\nuse App\\Http\\Controllers\\{$class_singular}Controller;";
+
+            $new_web_contents = substr_replace($web_contents, $web_replacement, $last_use_statement, 0);
+            $this->files->put(base_path('routes/web.php'), $new_web_contents);
 
             // Write the web prefix
             $web_route_prefix =
@@ -175,7 +172,7 @@ class TemplarMake extends Command
 
             // Write the GET route to web.php
             $web_string_get =
-            "\n\tRoute::get('/$class_lower_plural', [{$class_singular}Controller::class, '{$class_lower_plural}Page'])->name('{$this->getNameInput()}/{$this->getNameInput()}Page');";
+            "\n    Route::get('/$class_kebab', [{$class_singular}Controller::class, '{$class_lower_plural}Page'])->name('{$this->getNameInput()}/{$this->getNameInput()}Page');";
 
             $this->files->append(
                 base_path('routes/web.php'),
@@ -184,7 +181,7 @@ class TemplarMake extends Command
 
             // Write the route postfix
             $web_route_postfix =
-                "\n});";
+                "\n});\n";
 
             $this->files->append(
                 base_path('routes/web.php'),
@@ -221,7 +218,7 @@ class TemplarMake extends Command
 
             // Write the RESOURCE route to api.php
             $api_string_resource =
-            "\n\tRoute::apiResource('{$class_lower_plural}', {$class_singular}Controller::class)->except('show');";
+            "\n    Route::apiResource('{$class_kebab}', {$class_singular}Controller::class)->except('show');";
 
             $this->files->append(
                 base_path('routes/api.php'),
@@ -230,7 +227,7 @@ class TemplarMake extends Command
 
             // Write the route postfix
             $api_route_postfix =
-                "\n});";
+                "\n});\n";
 
             $this->files->append(
                 base_path('routes/api.php'),
