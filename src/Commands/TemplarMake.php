@@ -66,7 +66,6 @@ class TemplarMake extends Command
             'vue-listing' => false,
             'vuex-store' => false,
             'vue-create-edit-modal' => false,
-            'api-wrapper' => false,
             'web-controller' => false,
             'api-controller' => false,
             'service' => false,
@@ -93,12 +92,6 @@ class TemplarMake extends Command
             $this->call("make:vue-create-edit-modal", ['name' => $this->getNameInput()]);
 
             $generated['vue-create-edit-modal'] = true;
-        }
-
-        if ($ignore_prompt || $this->confirm("Generate Api Wrapper?")) {
-            // Make js file for "API wrapper"
-            $this->call("make:api-wrapper", ['name' => $this->getNameInput()]);
-            $generated['api-wrapper'] = true;
         }
 
         if ($ignore_prompt || $this->confirm("Generate Web Controller?")) {

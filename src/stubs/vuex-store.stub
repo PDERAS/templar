@@ -1,6 +1,6 @@
-import * as {{ class_upper_singular }}Api from '@/api/{{ class_lower_singular }}';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref } from 'vue';
+import axios from 'axios';
 
 export const use{{ class_upper_singular }}Store = defineStore('entity', () => {
     const all = ref({data: []});
@@ -10,19 +10,19 @@ export const use{{ class_upper_singular }}Store = defineStore('entity', () => {
     };
 
     const search{{ class }} = (params) => {
-        return {{ class_upper_singular }}Api.Search{{ class }}(params);
+        return axios.get('/api/v1/{{ class_kebab }}', { params });
     };
 
     const store{{ class_upper_singular }} = (params) => {
-        return {{ class_upper_singular }}Api.Store{{ class_upper_singular }}(params);
+        return axios.post('/api/v1/{{ class_kebab }}', params);
     };
 
     const update{{ class_upper_singular }} = (params) => {
-        return {{ class_upper_singular }}Api.Update{{ class_upper_singular }}(params);
+        return axios.patch('/api/v1/{{ class_kebab }}/' + params.hash, params);
     };
 
     const destroy{{ class_upper_singular }} = (params) => {
-        return {{ class_upper_singular }}Api.Destroy{{ class_upper_singular }}(params);
+        return axios.delete('/api/v1/{{ class_kebab }}/' + params.hash);
     };
 
     return {
