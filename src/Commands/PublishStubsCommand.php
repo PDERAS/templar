@@ -30,7 +30,7 @@ class PublishStubsCommand extends Command
     public function handle()
     {
         if (!is_dir($stubsPath = base_path('stubs'))) {
-            (new Filesystem)->makeDirectory($stubsPath);
+            (new Filesystem())->makeDirectory($stubsPath);
         }
 
         foreach ($this->getStubFilenames() as $file) {
@@ -54,7 +54,6 @@ class PublishStubsCommand extends Command
     {
         return [
             'api-controller.stub',
-            'api-wrapper.stub',
             'service.stub',
             'vue-create-edit-modal.stub',
             'vue-listing-page.stub',

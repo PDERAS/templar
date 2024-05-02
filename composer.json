@@ -2,7 +2,7 @@
     "name": "pderas/templar",
     "description": "A templating engine for the PDERAS pattern",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "autoload": {
         "psr-4": {
             "Pderas\\Templar\\": "src/"

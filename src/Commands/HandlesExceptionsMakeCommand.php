@@ -41,6 +41,8 @@ class HandlesExceptionsMakeCommand extends Command
             return;
         }
 
+        File::makeDirectory(dirname($path), 0755, true, true);
+
         File::put($path, $this->getFileContents());
 
         $this->info("Trait {$this->filename} created successfully");
