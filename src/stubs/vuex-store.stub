@@ -9,29 +9,29 @@ export const use{{ class_upper_singular }}Store = defineStore('entity', () => {
         all.value = {data: []};
     };
 
-    const search{{ class }} = (params) => {
+    const search = (params) => {
         return axios.get('/api/v1/{{ class_kebab }}', { params });
     };
 
-    const store{{ class_upper_singular }} = (params) => {
+    const store = (params) => {
         return axios.post('/api/v1/{{ class_kebab }}', params);
     };
 
-    const update{{ class_upper_singular }} = (params) => {
+    const update = (params) => {
         return axios.patch('/api/v1/{{ class_kebab }}/' + params.hash, params);
     };
 
-    const destroy{{ class_upper_singular }} = (params) => {
+    const destroy = (params) => {
         return axios.delete('/api/v1/{{ class_kebab }}/' + params.hash);
     };
 
     return {
         all,
         reset,
-        search{{ class }},
-        store{{ class_upper_singular }},
-        update{{ class_upper_singular }},
-        destroy{{ class_upper_singular }},
+        search,
+        store,
+        update,
+        destroy,
     };
 });
 

@@ -12,7 +12,7 @@ class {{ class_upper_singular }}Controller extends Controller
      *
      * @return \Inertia\Response
      */
-    public function {{ class_lower }}Page()
+    public function index()
     {
         Vuex::load('{{ class_lower_singular }}', 'all');
 
