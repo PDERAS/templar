@@ -2,7 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref } from 'vue';
 import axios from 'axios';
 
-export const use{{ class_upper_singular }}Store = defineStore('entity', () => {
+export const use{{ class_upper_singular }}Store = defineStore('{{ class_lower_singular }}', () => {
     const all = ref({data: []});
 
     const reset = () => {
