@@ -8,11 +8,11 @@ use Pderas\VuexHydrate\Facades\Vuex;
 class {{ class_upper_singular }}Controller extends Controller
 {
     /**
-     * {{ class }} listing page
+     * Index listing page
      *
      * @return \Inertia\Response
      */
-    public function {{ class_lower }}Page()
+    public function index()
     {
         Vuex::load('{{ class_lower_singular }}', 'all');
 
