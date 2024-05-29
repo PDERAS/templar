@@ -8,7 +8,7 @@ use Pderas\VuexHydrate\Facades\Vuex;
 class {{ class_upper_singular }}Controller extends Controller
 {
     /**
-     * {{ class }} listing page
+     * Index listing page
      *
      * @return \Inertia\Response
      */
