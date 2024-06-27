@@ -165,7 +165,7 @@ class TemplarMake extends Command
 
             // Write the GET route to web.php
             $web_string_get =
-            "\n    Route::get('/$class_kebab', [{$class_singular}Controller::class, 'index'])";
+            "\n    Route::get('/$class_kebab', [{$class_singular}Controller::class, 'index']);";
 
             $this->files->append(
                 base_path('routes/web.php'),

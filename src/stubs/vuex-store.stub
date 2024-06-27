@@ -3,10 +3,10 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 export const use{{ class_upper_singular }}Store = defineStore('{{ class_lower_singular }}', () => {
-    const all = ref({data: []});
+    const all = ref( {data: []} );
 
     const reset = () => {
-        all.value = {data: []};
+        all.value = { data: [] };
     };
 
     const search = (params) => {

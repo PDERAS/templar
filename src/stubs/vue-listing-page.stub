@@ -23,15 +23,15 @@ const modals = inject('modals');
 
 const clearSearch = () => {
     params.value.term = '';
-    search{{ class }};
+    search{{ class }}();
 };
 
 const tableUpdate = ({ page, sortBy, itemsPerPage }) => {
     Object.assign(params.value, { page, sort_by: sortBy, per_page: itemsPerPage });
-    search{{ class }};
+    search{{ class }}();
 };
 
-const delete = async ({{ class_lower_singular }}) => {
+const remove = async ({{ class_lower_singular }}) => {
     const confirm = await modals.show('ConfirmationModal', {
         title: 'Confirm {{ class_title }} Removal',
         prompt: 'Delete {{ class_title }}?',
@@ -39,7 +39,7 @@ const delete = async ({{ class_lower_singular }}) => {
 
     if (confirm) {
         await destroy({ hash: {{ class_lower_singular }}.hash });
-        search{{ class }};
+        search{{ class }}();
     }
 };
 
@@ -52,7 +52,7 @@ const openModal = (modal, mode = 'Create', {{ class_lower_singular }} = null) =>
             mode: mode,
         }
     }).then(() => {
-        search{{ class }}
+        search{{ class }}();
     });
 };
 </script>
@@ -79,19 +79,19 @@ const openModal = (modal, mode = 'Create', {{ class_lower_singular }} = null) =>
         v-if="all"
         :data="all"
         :headers="[
-            // { title: 'Name', key: 'full_name', value: item => `${item.first_name} ${item.last_name}` },
-            // { title: 'Email', key: 'email' },
+            // { title: $t('label.name'), key: 'full_name', value: item => `${item.first_name} ${item.last_name}` },
+            // { title: $t('label.email'), key: 'email' },
         ]"
         :actions="[
             {
-                title: 'Edit',
+                title: $t('label.Edit'),
                 icon: 'mdi-pencil',
                 action: (item) => openModal('{{ class }}Modal', 'Edit', item),
             },
             {
-                title: 'Delete',
+                title: $t('label.Delete'),
                 icon: 'mdi-delete',
-                action: (item) => delete{{ class_upper_singular }}(item),
+                action: (item) => remove(item),
             },
         ]"
         @table-update="tableUpdate" />

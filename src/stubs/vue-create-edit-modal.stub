@@ -17,7 +17,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close-modal']);
-const { store{{ class_upper_singular }}, update{{ class_upper_singular }} } = use{{ class_upper_singular }}Store();
+const { store, update } = use{{ class_upper_singular }}Store();
 
 const form = ref({
     ...props.{{ class_lower_singular }},
