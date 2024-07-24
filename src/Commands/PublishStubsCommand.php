@@ -2,6 +2,7 @@
 
 namespace Pderas\Templar\Commands;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
