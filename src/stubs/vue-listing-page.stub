@@ -2,6 +2,7 @@
 import { ref, inject } from 'vue';
 import { use{{ class_upper_singular }}Store } from '@/stores/{{ class_lower_singular }}';
 import { storeToRefs } from 'pinia';
+import { trans } from 'laravel-vue-i18n';
 
 const { search, destroy } = use{{ class_upper_singular }}Store();
 const { all } = storeToRefs(use{{ class_upper_singular }}Store());
@@ -33,8 +34,8 @@ const tableUpdate = ({ page, sortBy, itemsPerPage }) => {
 
 const remove = async ({{ class_lower_singular }}) => {
     const confirm = await modals.show('ConfirmationModal', {
-        title: 'Confirm {{ class_title }} Removal',
-        prompt: 'Delete {{ class_title }}?',
+        title: trans('label.confirm_delete'),
+        prompt: trans('label.are_you_sure_delete'),
     });
 
     if (confirm) {
@@ -60,10 +61,10 @@ const openModal = (modal, mode = 'Create', {{ class_lower_singular }} = null) =>
 <template>
 <MainContentLayout>
     <template #breadcrumb><BreadCrumb /></template>
-    <template #title>{{ class_title }} Management</template>
+    <template #title>{{ $t('label.management_title',{ 'what' : '{{ class_title }}' }) }}</template>
     <template #actions>
         <StyledButton @click="openModal('{{ class }}Modal')">
-            <FontAwesomeIcon icon="plus" class="mr-1" /> New {{ class_title }}
+            <FontAwesomeIcon icon="plus" class="mr-1" /> {{ $t('label.create') }}
         </StyledButton>
     </template>
     <div class="grid lg:grid-cols-3 md:gap-4 md:mb-4">

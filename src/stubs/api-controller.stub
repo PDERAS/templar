@@ -3,123 +3,55 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-// Requests
+use App\Services\{{ class_upper_singular }}Service;
+use App\Models\{{ class_upper_singular }};
+use Pderas\VuexHydrate\Facades\Vuex;
 use App\Http\Requests\{{ class }}\Search{{ class_upper_singular }}Request;
 use App\Http\Requests\{{ class }}\Update{{ class_upper_singular }}Request;
 use App\Http\Requests\{{ class }}\Store{{ class_upper_singular }}Request;
 use App\Http\Requests\{{ class }}\Delete{{ class_upper_singular }}Request;
-// Models
-use App\Models\{{ class_upper_singular }};
-// Misc
-use Pderas\VuexHydrate\Facades\Vuex;
-use App\Traits\HandlesExceptions;
-// Service
-use App\Services\{{ class_upper_singular }}Service;
+
 
 class {{ class_upper_singular }}Controller extends Controller
 {
-    use HandlesExceptions;
-
-    /**
-     * Service class
-     *
-     * @var \App\Services\{{ class_upper_singular }}Service
-     */
     private {{ class_upper_singular }}Service ${{ class_snake_singular }}_service;
 
-    /**
-     * Controller constructor with injected service dependency
-     *
-     * @param  \App\Services\{{ class_upper_singular }}Service ${{ class_snake_singular }}_service
-     * @return void
-     */
     public function __construct({{ class_upper_singular }}Service ${{ class_snake_singular }}_service)
     {
         $this->{{ class_snake_singular }}_service = ${{ class_snake_singular }}_service;
     }
 
-    /**
-     * {{ class_upper_singular }} search
-     *
-     * @param \App\Http\Requests\{{ class }}\Search{{ class_upper_singular }}Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index(Search{{ class_upper_singular }}Request $request)
+    public function index(Search{{ class_upper_singular }}Request $request): \Illuminate\Http\JsonResponse
     {
         Vuex::load('{{ class_lower_singular }}', 'all');
 
         return response()->vuex();
     }
 
-    /**
-     * Store {{ class_upper_singular }}
-     *
-     * @param \App\Http\Requests\{{ class }}\Store{{ class_upper_singular }}Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(Store{{ class_upper_singular }}Request $request)
+    public function store(Store{{ class_upper_singular }}Request $request): \Illuminate\Http\JsonResponse
     {
-        try {
-            $this->{{ class_snake_singular }}_service->store($request->validated());
-        } catch (\Throwable $e) {
-            return $this->handleException(
-                $e,
-                'There was a problem saving {{ class_word }}.'
-            );
-        }
+        $this->{{ class_snake_singular }}_service->store($request->validated());
 
         Vuex::load('{{ class_lower_singular }}', 'all');
 
         return response()->vuex();
     }
 
-    /**
-     * Update {{ class_upper_singular }}
-     *
-     * @param \App\Models\{{ class_upper_singular }}
-     * @param App\Http\Requests\{{ class }}\Update{{ class_upper_singular }}Request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update({{ class_upper_singular }} ${{ class_snake_singular }}, Update{{ class_upper_singular }}Request $request)
+    public function update({{ class_upper_singular }} ${{ class_snake_singular }}, Update{{ class_upper_singular }}Request $request): \Illuminate\Http\JsonResponse
     {
-        try {
-            $this->{{ class_snake_singular }}_service->update(${{ class_snake_singular }}, $request->validated());
-        } catch (\Throwable $e) {
-            return $this->handleException(
-                $e,
-                'There was a problem updating {{ class_word }}.'
-            );
-        }
+        $this->{{ class_snake_singular }}_service->update(${{ class_snake_singular }}, $request->validated());
 
         Vuex::load('{{ class_lower_singular }}', 'all');
 
         return response()->vuex();
     }
 
-    /**
-     * Delete {{ class_upper_singular }}
-     *
-     * @param {{ class_upper_singular }} ${{ class_snake_singular }}
-     * @param \App\Http\Requests\{{ class }}\Delete{{ class_upper_singular }}Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy({{ class_upper_singular }} ${{ class_snake_singular }}, Delete{{ class_upper_singular }}Request $request)
+    public function destroy({{ class_upper_singular }} ${{ class_snake_singular }}, Delete{{ class_upper_singular }}Request $request): \Illuminate\Http\JsonResponse
     {
-        try {
-            $this->{{ class_snake_singular }}_service->destroy(${{ class_snake_singular }});
-        } catch (\Throwable $e) {
-            return $this->handleException(
-                $e,
-                'There was a problem deleting {{ class_word }}.'
-            );
-        }
+        $this->{{ class_snake_singular }}_service->destroy(${{ class_snake_singular }});
 
         Vuex::load('{{ class_lower_singular }}', 'all');
-
+        
         return response()->vuex();
     }
 }

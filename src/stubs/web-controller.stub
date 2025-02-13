@@ -7,12 +7,7 @@ use Pderas\VuexHydrate\Facades\Vuex;
 
 class {{ class_upper_singular }}Controller extends Controller
 {
-    /**
-     * Index listing page
-     *
-     * @return \Inertia\Response
-     */
-    public function index()
+    public function index(): \Inertia\Response
     {
         Vuex::load('{{ class_lower_singular }}', 'all');
 

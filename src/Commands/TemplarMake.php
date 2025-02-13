@@ -61,7 +61,7 @@ class TemplarMake extends Command
         $class_singular = Str::singular($this->getNameInput());
         $class_kebab = Str::kebab($this->getNameInput());
 
-        // Keep track of what was generateed
+        // Keep track of what was generated
         $generated = [
             'vue-listing' => false,
             'vuex-store' => false,
@@ -104,9 +104,6 @@ class TemplarMake extends Command
             // Make php file for API Controller
             $this->call("make:api-controller", ['name' => $this->getNameInput()]);
             $generated['api-controller'] = true;
-
-            // Create HandlesException trait
-            $this->call("make:handles-exceptions");
         }
 
         if ($ignore_prompt || $this->confirm("Generate Service?")) {
