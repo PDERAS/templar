@@ -24,7 +24,7 @@ const form = ref({
 });
 
 const save = async () => {
-    const action = props.mode === 'Create' ? store{{ class_upper_singular }} : update{{ class_upper_singular }};
+    const action = props.mode === 'Create' ? store : update;
     await action({
         ...form.value,
     });
@@ -35,8 +35,8 @@ const save = async () => {
 
 <template>
 <ModalWrapper>
-    <template #header>{{ mode }} {{ class_title }}</template>
-    <template #subheader>Create or edit a {{ class_word }}</template>
+    <template #header>{{ $t('label.mode_what', { 'mode' : mode, 'what' : '{{ class_word }}' }) }}</template>
+    <template #subheader>{{ $t('label.create_or_edit', { 'what' : '{{ class_word }}' }) }}</template>
 
     <form @submit.prevent="save">
         <div class="md:grid md:grid-cols-3 gap-x-4">

@@ -8,12 +8,7 @@ use Illuminate\Support\Arr;
 
 class {{ class_upper_singular }}ModuleLoader extends VuexLoader
 {
-    /**
-     * Index of all {{ class_lower }}
-     *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    public function all()
+    public function all(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         ${{ class_lower }} = {{ class_upper_singular }}::query();
 

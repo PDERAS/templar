@@ -7,40 +7,21 @@ use Illuminate\Support\Facades\DB;
 
 class {{ class_upper_singular }}Service
 {
-    /**
-     * Store {{ class_upper_singular }}
-     *
-     * @param  array $attributes
-     * @return void
-     */
-    public function store(array $attributes)
+    public function store(array $attributes): void
     {
         DB::transaction(function () use ($attributes) {
             {{ class_upper_singular }}::create($attributes);
         });
     }
 
-    /**
-     * Update {{ class_upper_singular }}
-     *
-     * @param  \App\Models\{{ class_upper_singular }} ${{ class_snake_singular }}
-     * @param  array $attributes
-     * @return void
-     */
-    public function update({{ class_upper_singular }} ${{ class_snake_singular }}, array $attributes)
+    public function update({{ class_upper_singular }} ${{ class_snake_singular }}, array $attributes): void
     {
         DB::transaction(function () use (${{ class_snake_singular }}, $attributes) {
             ${{ class_snake_singular }}->update($attributes);
         });
     }
 
-    /**
-     * Destroy {{ class_upper_singular }}
-     *
-     * @param  \App\Models\{{ class_upper_singular }}
-     * @return void
-     */
-    public function destroy({{ class_upper_singular }} ${{ class_snake_singular }})
+    public function destroy({{ class_upper_singular }} ${{ class_snake_singular }}):void
     {
         DB::transaction(function () use (${{ class_snake_singular }}) {
             ${{ class_snake_singular }}->delete();

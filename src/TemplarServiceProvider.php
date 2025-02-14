@@ -8,8 +8,6 @@ use Pderas\Templar\Commands\TemplarMake;
 // Templating commands
 use Pderas\Templar\Commands\VueListingPageMakeCommand;
 use Pderas\Templar\Commands\VuexStoreMakeCommand;
-use Pderas\Templar\Commands\ApiWrapperMakeCommand;
-use Pderas\Templar\Commands\HandlesExceptionsMakeCommand;
 use Pderas\Templar\Commands\PublishStubsCommand;
 use Pderas\Templar\Commands\ServiceMakeCommand;
 use Pderas\Templar\Commands\VueCreateEditModalMakeCommand;
@@ -40,11 +38,9 @@ class TemplarServiceProvider extends ServiceProvider
                 TemplarMake::class,
                 VueListingPageMakeCommand::class,
                 VuexStoreMakeCommand::class,
-                ApiWrapperMakeCommand::class,
                 VueCreateEditModalMakeCommand::class,
                 WebControllerMakeCommand::class,
                 ApiControllerMakeCommand::class,
-                HandlesExceptionsMakeCommand::class,
                 ServiceMakeCommand::class,
                 VuexModuleLoaderMakeCommand::class,
                 PublishStubsCommand::class,
